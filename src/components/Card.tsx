@@ -1,4 +1,4 @@
-import { Image, Text, View } from 'react-native';
+import { Image, Text, View } from "react-native";
 
 type Profile = {
   name: string;
@@ -24,35 +24,35 @@ export const Card = (props: Card) => {
     <View
       style={{
         backgroundColor: backgroundColor,
-        width: '75vw',
+        width: "75%",
         borderRadius: 10,
-        height: '55vh',
-        justifyContent: 'space-between',
+        height: "55%",
+        justifyContent: "space-between",
       }}
     >
       <View
         style={{
-          backgroundColor: '#84FAB0',
+          backgroundColor: "#84FAB0",
           borderTopRightRadius: 10,
           borderTopLeftRadius: 10,
         }}
       >
         <View
           style={{
-            alignItems: 'flex-end',
+            alignItems: "flex-end",
           }}
         >
           <Text
             style={{
-              width: '25vw',
-              backgroundColor: '#FF5555',
+              width: "25%",
+              backgroundColor: "#FF5555",
               borderBottomLeftRadius: 10,
               borderTopRightRadius: 10,
-              fontWeight: 'bold',
-              textAlign: 'center',
-              paddingTop: '5px',
-              paddingBottom: '5px',
-              color: 'white',
+              fontWeight: "bold",
+              textAlign: "center",
+              paddingTop: 5,
+              paddingBottom: 5,
+              color: "white",
             }}
           >
             回答受付中
@@ -60,17 +60,17 @@ export const Card = (props: Card) => {
         </View>
         <View
           style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            alignItems: "center",
             // @ts-ignore
-            gap: '20px',
-            marginLeft: '20px',
+            gap: 20,
+            marginLeft: 20,
           }}
         >
           <Image
-            source={require('./assets/lefty.png')}
+            source={require("./assets/lefty.png")}
             style={{
               height: 40,
               width: 40,
@@ -78,17 +78,17 @@ export const Card = (props: Card) => {
           />
           <View
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-              justifyContent: 'flex-start',
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              justifyContent: "flex-start",
             }}
           >
             <Text
               style={{
                 fontSize: 12,
-                marginTop: '5px',
-                color: 'black',
+                marginTop: 5,
+                color: "black",
               }}
             >
               {name}
@@ -98,55 +98,55 @@ export const Card = (props: Card) => {
         </View>
         <View
           style={{
-            display: 'flex',
-            flexDirection: 'row',
+            display: "flex",
+            flexDirection: "row",
             // @ts-ignore
-            gap: '10px',
-            justifyContent: 'center',
-            marginTop: '10px',
-            marginBottom: '10px',
+            gap: "10px",
+            justifyContent: "center",
+            marginTop: 10,
+            marginBottom: 10,
           }}
         >
           <Text
             style={{
-              backgroundColor: 'white',
+              backgroundColor: "white",
               borderRadius: 70,
-              paddingRight: '10px',
-              paddingLeft: '10px',
-              color: 'black',
+              paddingRight: 10,
+              paddingLeft: 10,
+              color: "black",
             }}
           >
             悩み
           </Text>
           <Text
             style={{
-              backgroundColor: 'white',
+              backgroundColor: "white",
               borderRadius: 70,
-              paddingRight: '10px',
-              paddingLeft: '10px',
-              color: 'black',
+              paddingRight: 10,
+              paddingLeft: 10,
+              color: "black",
             }}
           >
             友達
           </Text>
           <Text
             style={{
-              backgroundColor: 'white',
+              backgroundColor: "white",
               borderRadius: 70,
-              paddingRight: '10px',
-              paddingLeft: '10px',
-              color: 'black',
+              paddingRight: 10,
+              paddingLeft: 10,
+              color: "black",
             }}
           >
             友達
           </Text>
           <Text
             style={{
-              backgroundColor: 'white',
+              backgroundColor: "white",
               borderRadius: 70,
-              paddingRight: '10px',
-              paddingLeft: '10px',
-              color: 'black',
+              paddingRight: 10,
+              paddingLeft: 10,
+              color: "black",
             }}
           >
             友達
@@ -154,10 +154,10 @@ export const Card = (props: Card) => {
         </View>
         <View
           style={{
-            padding: '10px',
-            backgroundColor: 'white',
-            display: 'flex',
-            flexDirection: 'column',
+            padding: 10,
+            backgroundColor: "white",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
           <Text>{description}</Text>
@@ -167,12 +167,12 @@ export const Card = (props: Card) => {
         style={{
           borderBottomRightRadius: 10,
           borderBottomLeftRadius: 10,
-          backgroundColor: '#84FAB0',
+          backgroundColor: "#84FAB0",
         }}
       >
         <Text
           style={{
-            textAlign: 'center',
+            textAlign: "center",
           }}
         >
           3件の回答がつきました

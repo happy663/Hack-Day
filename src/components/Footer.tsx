@@ -1,26 +1,24 @@
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
 export const Footer = () => {
   return (
     <View
       style={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        height: '70px',
-        //@ts-ignore
-        gap: '20px',
-        alignItems: 'center',
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        height: 70,
+        alignItems: "center",
       }}
     >
       <TouchableOpacity
         style={{
-          display: 'flex',
-          alignItems: 'center',
+          display: "flex",
+          alignItems: "center",
         }}
       >
         <Image
-          source={require('./assets/home.png')}
+          source={require("./assets/home.png")}
           style={{
             height: 20,
             width: 20,
@@ -36,12 +34,12 @@ export const Footer = () => {
       </TouchableOpacity>
       <TouchableOpacity
         style={{
-          display: 'flex',
-          alignItems: 'center',
+          display: "flex",
+          alignItems: "center",
         }}
       >
         <Image
-          source={require('./assets/comment.png')}
+          source={require("./assets/comment.png")}
           style={{
             height: 20,
             width: 20,
@@ -57,12 +55,12 @@ export const Footer = () => {
       </TouchableOpacity>
       <TouchableOpacity
         style={{
-          display: 'flex',
-          alignItems: 'center',
+          display: "flex",
+          alignItems: "center",
         }}
       >
         <Image
-          source={require('./assets/play.png')}
+          source={require("./assets/play.png")}
           style={{
             height: 20,
             width: 20,
@@ -78,12 +76,12 @@ export const Footer = () => {
       </TouchableOpacity>
       <TouchableOpacity
         style={{
-          display: 'flex',
-          alignItems: 'center',
+          display: "flex",
+          alignItems: "center",
         }}
       >
         <Image
-          source={require('./assets/notify.png')}
+          source={require("./assets/notify.png")}
           style={{
             height: 20,
             width: 20,
@@ -99,12 +97,12 @@ export const Footer = () => {
       </TouchableOpacity>
       <TouchableOpacity
         style={{
-          display: 'flex',
-          alignItems: 'center',
+          display: "flex",
+          alignItems: "center",
         }}
       >
         <Image
-          source={require('./assets/lefty.png')}
+          source={require("./assets/lefty.png")}
           style={{
             height: 20,
             width: 20,
