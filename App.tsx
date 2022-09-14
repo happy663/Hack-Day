@@ -1,12 +1,12 @@
 import { StyleSheet } from "react-native";
-import { Home } from "src/components/Home";
-import { Layout } from "src/components/layout/Layout";
+import { Home } from "src/containers";
+import { BaseLayout } from "src/components/layout";
 
 export default function App() {
   return (
-    <Layout>
+    <BaseLayout>
       <Home />
-    </Layout>
+    </BaseLayout>
   );
 }
 
