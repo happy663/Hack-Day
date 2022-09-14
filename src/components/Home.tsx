@@ -9,7 +9,6 @@ import {
   View,
 } from "react-native";
 import { Card } from "src/components/Card";
-
 import { PlayBar } from "src/components/PlayBar";
 
 export const Home = () => {

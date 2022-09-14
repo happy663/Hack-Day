@@ -1,15 +1,6 @@
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { Card } from "src/components/Card";
+import { StyleSheet } from "react-native";
 import { Home } from "src/components/Home";
-import { Layout } from "src/components/Layout";
-import { PlayBar } from "src/components/PlayBar";
+import { Layout } from "src/components/layout/Layout";
 
 export default function App() {
   return (
