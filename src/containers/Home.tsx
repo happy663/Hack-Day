@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { QuestionCard, PopPlayer } from 'src/components';
 import { theme, globalStyles } from 'src/utils/theme';
-import { useQuestions } from 'src/hooks/hook';
+import { useQuestions } from 'src/hooks/useQuestions';
 
 export const Home = () => {
   const { questions, setCurrentQuestion } = useQuestions();
