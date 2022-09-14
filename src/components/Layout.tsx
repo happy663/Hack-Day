@@ -1,4 +1,4 @@
-import { Footer } from "components/Footer";
+import { Footer } from "src/components/Footer";
 import { ReactNode, VFC } from "react";
 import { Text, View } from "react-native";
 

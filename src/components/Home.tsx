@@ -1,7 +1,16 @@
-import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { Card } from "components/Card";
+import { StatusBar } from "expo-status-bar";
+import {
+  Button,
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { Card } from "src/components/Card";
 
-import { PlayBar } from "components/PlayBar";
+import { PlayBar } from "src/components/PlayBar";
 
 export const Home = () => {
   return (

@@ -70,7 +70,7 @@ export const Card = (props: Card) => {
           }}
         >
           <Image
-            source={require("./assets/lefty.png")}
+            source={require("assets/lefty.png")}
             style={{
               height: 40,
               width: 40,

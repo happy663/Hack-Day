@@ -18,7 +18,7 @@ export const Footer = () => {
         }}
       >
         <Image
-          source={require("./assets/home.png")}
+          source={require("assets/home.png")}
           style={{
             height: 20,
             width: 20,
@@ -39,7 +39,7 @@ export const Footer = () => {
         }}
       >
         <Image
-          source={require("./assets/comment.png")}
+          source={require("assets/comment.png")}
           style={{
             height: 20,
             width: 20,
@@ -60,7 +60,7 @@ export const Footer = () => {
         }}
       >
         <Image
-          source={require("./assets/play.png")}
+          source={require("assets/play.png")}
           style={{
             height: 20,
             width: 20,
@@ -81,7 +81,7 @@ export const Footer = () => {
         }}
       >
         <Image
-          source={require("./assets/notify.png")}
+          source={require("assets/notify.png")}
           style={{
             height: 20,
             width: 20,
@@ -102,7 +102,7 @@ export const Footer = () => {
         }}
       >
         <Image
-          source={require("./assets/lefty.png")}
+          source={require("assets/lefty.png")}
           style={{
             height: 20,
             width: 20,
