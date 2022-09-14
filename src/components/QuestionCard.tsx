@@ -1,61 +1,54 @@
 import { StyleSheet, Image, Text, View, Dimensions } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { theme, globalStyles } from "src/utils/theme";
+import { Question } from "src/types";
 
-type Profile = {
-  name: string;
-  image: string;
-};
-
-type Card = {
-  profile: Profile;
-  description: string;
-  backgroundColor: string;
-  tags: string[];
-};
-
-export const QuestionCard = (props: Card) => {
-  const {
-    profile: { name, image },
-    description,
-    backgroundColor,
-    tags,
-  } = props;
-
+export const QuestionCard = ({
+  keywords,
+  isResolved,
+  voice,
+  answer_count,
+  colors,
+  created_at,
+  user,
+}: Question) => {
   return (
-    <View style={{ ...styles.container, backgroundColor: backgroundColor }}>
+    <LinearGradient colors={colors} style={{ ...styles.container }}>
       <View style={styles.isResolvedContainer}>
-        <Text style={{ ...styles.isResolvedText, ...styles.isResolvedFalse }}>
-          回答受付中
-        </Text>
-        {/* <Text style={{ ...styles.isResolvedText, ...styles.isResolvedTrue }}>
-          解決済み
-        </Text> */}
+        {!isResolved ? (
+          <Text style={{ ...styles.isResolvedText, ...styles.isResolvedFalse }}>
+            回答受付中
+          </Text>
+        ) : (
+          <Text style={{ ...styles.isResolvedText, ...styles.isResolvedTrue }}>
+            解決済み
+          </Text>
+        )}
       </View>
-
       <View style={styles.profileContainer}>
         <Image
           source={require("assets/lefty.png")}
           style={globalStyles.iconLg}
         />
         <View style={{ paddingLeft: 8 }}>
-          <Text style={globalStyles.headingLg}>{name}</Text>
+          <Text style={globalStyles.headingLg}>{user.name}</Text>
           <Text style={globalStyles.text}>2022/09/11 16:09</Text>
         </View>
       </View>
       <View style={styles.tagContainer}>
-        {tags.map((tag) => (
+        {keywords.map((keyword) => (
           <Text style={styles.tag} key={Math.random()}>
-            {tag}
+            {keyword}
           </Text>
         ))}
       </View>
       <View style={styles.summaryContainer}>
-        <Text style={styles.summaryText}>{description}</Text>
+        <Text style={styles.summaryText}>{voice.summary_text}</Text>
       </View>
       <View style={styles.answerCountContainer}>
         <Text style={styles.answerCountText}>3件の回答がつきました</Text>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
