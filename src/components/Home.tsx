@@ -76,7 +76,7 @@ export const Home = () => {
         <Card
           profile={{
             name: "れふてぃさん",
-            image: "./assets/lefty.png",
+            image: "assets/lefty.png",
           }}
           description="誰か助けてください。友達と喧嘩して連絡が取れなくなりました"
           tags={["#友達", "#喧嘩"]}
@@ -85,7 +85,7 @@ export const Home = () => {
         <Card
           profile={{
             name: "れふてぃさん",
-            image: "./assets/lefty.png",
+            image: "assets/lefty.png",
           }}
           description="席替えで私の後ろの席に友達が座っていて、その子の隣に私の好きな人が座っています。
           私が彼を好きな事を知っていて応援するよと言ってくれるのですが、休み時間や授業中にすごい楽しそうに彼と話していて発言と行動が矛盾し過ぎていると思いませんか？彼女の意図はなんでしょう…"
@@ -95,7 +95,7 @@ export const Home = () => {
         <Card
           profile={{
             name: "れふてぃさん",
-            image: "./assets/lefty.png",
+            image: "assets/lefty.png",
           }}
           description="誰か助けてください。友達と喧嘩して連絡が取れなくなりました"
           tags={["#友達", "#喧嘩"]}
@@ -134,7 +134,7 @@ export const Home = () => {
             }}
           >
             <Image
-              source={require("./assets/lefty.png")}
+              source={require("assets/lefty.png")}
               style={{
                 height: 40,
                 width: 40,
@@ -150,7 +150,7 @@ export const Home = () => {
           }}
         >
           <Image
-            source={require("./assets/play.png")}
+            source={require("assets/play.png")}
             style={{
               height: 40,
               width: 40,
