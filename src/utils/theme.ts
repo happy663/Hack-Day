@@ -4,10 +4,16 @@ export const theme = {
   colors: {
     main: "#F4A261",
     white: "#FFFFFF",
+    black: "#000000",
     gray: ["#ededed", "#ACACAC"],
     red: "#FF5555",
     opacityWhite: "rgba(255, 255, 255, 0.5)",
     opacityBlack: "rgba(0, 0, 0, 0.5)",
+  },
+  iconSize: {
+    sm: 24,
+    md: 48,
+    lg: 60,
   },
 };
 
@@ -17,8 +23,8 @@ export const globalStyles = StyleSheet.create({
     width: 24,
   },
   iconMd: {
-    height: 40,
-    width: 40,
+    height: 48,
+    width: 48,
   },
   iconLg: {
     height: 60,
