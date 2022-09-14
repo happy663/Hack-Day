@@ -1,7 +1,7 @@
-import { StyleSheet, Image, Text, View, Dimensions } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { theme, globalStyles } from "src/utils/theme";
-import { Question } from "src/types";
+import { StyleSheet, Image, Text, View, Dimensions } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { theme, globalStyles } from 'src/utils/theme';
+import { Question } from 'src/types';
 
 export const QuestionCard = ({
   keywords,
@@ -27,7 +27,7 @@ export const QuestionCard = ({
       </View>
       <View style={styles.profileContainer}>
         <Image
-          source={require("assets/lefty.png")}
+          source={require('assets/lefty.png')}
           style={globalStyles.iconLg}
         />
         <View style={{ paddingLeft: 8 }}>
@@ -36,7 +36,7 @@ export const QuestionCard = ({
         </View>
       </View>
       <View style={styles.tagContainer}>
-        {keywords.map((keyword) => (
+        {keywords?.map((keyword) => (
           <Text style={styles.tag} key={Math.random()}>
             {keyword}
           </Text>
@@ -55,21 +55,21 @@ export const QuestionCard = ({
 const styles = StyleSheet.create({
   container: {
     // このコンポーネント以外の高さの合計を引き算する
-    height: Dimensions.get("window").height - 404,
-    width: Dimensions.get("window").width - 40,
+    height: Dimensions.get('window').height - 404,
+    width: Dimensions.get('window').width - 40,
     marginHorizontal: 20,
     marginBottom: 4,
     borderRadius: 10,
     ...globalStyles.boxShadow,
   },
   isResolvedContainer: {
-    alignItems: "flex-end",
+    alignItems: 'flex-end',
   },
   isResolvedText: {
-    color: "#fff",
+    color: '#fff',
     borderBottomLeftRadius: 10,
     borderTopRightRadius: 10,
-    textAlign: "center",
+    textAlign: 'center',
     paddingVertical: 4,
     paddingHorizontal: 12,
     ...globalStyles.headingSm,
@@ -81,12 +81,12 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.gray[1],
   },
   profileContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 16,
   },
   tagContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingHorizontal: 16,
     paddingVertical: 12,
   },
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   summaryContainer: {
     flex: 1,
     padding: 10,
-    flexDirection: "column",
+    flexDirection: 'column',
     backgroundColor: theme.colors.opacityWhite,
   },
   summaryText: {
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.opacityBlack,
   },
   answerCountText: {
-    textAlign: "center",
+    textAlign: 'center',
     color: theme.colors.white,
     ...globalStyles.textBold,
   },
