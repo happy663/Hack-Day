@@ -28,5 +28,5 @@ export const useQuestion = () => {
     fetchAndSetQuestions();
   }, []);
 
-  return { questions, currentQuestion, setQuestions, setCurrentQuestion };
+  return { questions, setCurrentQuestion };
 };
