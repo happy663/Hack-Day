@@ -7,22 +7,22 @@ import { questionConverter } from 'src/utils/firebaseConverter';
 import { db } from 'src/utils/firebase';
 import { currentQuestionState } from 'src/globalStates/atoms';
 
-export const useQuestion = () => {
+export const useQuestions = () => {
   const [questions, setQuestions] = useRecoilState(questionsState);
   const setCurrentQuestion = useSetRecoilState(currentQuestionState);
 
   React.useEffect(() => {
     const fetchAndSetQuestions = async () => {
-      const dataQuestions: Question[] = [];
+      const arrayQuestion: Question[] = [];
       const querySnapshot = await getDocs(
         collection(db, 'Questions').withConverter(questionConverter)
       );
       querySnapshot.forEach((doc) => {
-        dataQuestions.push(doc.data());
+        arrayQuestion.push(doc.data());
       });
 
-      setQuestions([...questions, ...dataQuestions]);
-      setCurrentQuestion(dataQuestions[0]);
+      setQuestions([...questions, ...arrayQuestion]);
+      setCurrentQuestion(arrayQuestion[0]);
     };
     fetchAndSetQuestions();
   }, []);
