@@ -1,12 +1,15 @@
 import { StyleSheet } from "react-native";
 import { Home } from "src/containers";
 import { BaseLayout } from "src/components/layout";
+import { RecoilRoot } from "recoil";
 
 export default function App() {
   return (
-    <BaseLayout>
-      <Home />
-    </BaseLayout>
+    <RecoilRoot>
+      <BaseLayout>
+        <Home />
+      </BaseLayout>
+    </RecoilRoot>
   );
 }
 
