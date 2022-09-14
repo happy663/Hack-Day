@@ -1,4 +1,4 @@
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { questionsState } from 'src/globalStates/atoms/questionsState';
 import React from 'react';
 import { Question } from 'src/types';
@@ -9,8 +9,7 @@ import { currentQuestionState } from 'src/globalStates/atoms';
 
 export const useQuestion = () => {
   const [questions, setQuestions] = useRecoilState(questionsState);
-  const [currentQuestion, setCurrentQuestion] =
-    useRecoilState(currentQuestionState);
+  const setCurrentQuestion = useSetRecoilState(currentQuestionState);
 
   React.useEffect(() => {
     const fetchAndSetQuestions = async () => {
