@@ -1,9 +1,9 @@
-import * as React from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
-import { Audio, AVPlaybackStatusSuccess } from "expo-av";
-import Slider from "@react-native-community/slider";
-import Icon from "react-native-vector-icons/Feather";
-import { theme, globalStyles } from "src/utils/theme";
+import * as React from 'react';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Audio, AVPlaybackStatusSuccess } from 'expo-av';
+import Slider from '@react-native-community/slider';
+import Icon from 'react-native-vector-icons/Feather';
+import { theme, globalStyles } from 'src/utils/theme';
 
 const isAVPlaybackStatusSuccess = (
   arg: any
@@ -17,7 +17,7 @@ export const Player = () => {
 
   const initSound = async () => {
     const { sound } = await Audio.Sound.createAsync({
-      uri: "https://amachamusic.chagasi.com/mp3/yume.mp3",
+      uri: 'https://amachamusic.chagasi.com/mp3/yume.mp3',
     });
     setSound(sound);
   };
@@ -70,7 +70,7 @@ export const Player = () => {
         <Slider
           style={{ flex: 1 }}
           minimumValue={0}
-          maximumValue={pbs?.durationMillis}
+          // maximumValue={pbs?.durationMillis}
           value={pbs?.positionMillis}
           thumbTintColor="#3F464E"
           minimumTrackTintColor="#3F464E"
@@ -87,11 +87,11 @@ export const Player = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "100%",
+    width: '100%',
     paddingHorizontal: 20,
   },
   flexRowBetween: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
