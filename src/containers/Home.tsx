@@ -16,11 +16,11 @@ import { db } from 'src/utils/firebase';
 import { questionsState } from 'src/globalStates/atoms/questionsState';
 import { Question } from 'src/types';
 import { questionConverter } from 'src/utils/firebaseConverter';
+import { useQuestion } from 'src/hooks/hook';
 
 export const Home = () => {
-  const [questions, setQuestions] = useRecoilState(questionsState);
-  const [currentQuestion, setCurrentQuestion] =
-    useRecoilState(currentQuestionState);
+  const { questions, setCurrentQuestion } = useQuestion();
+
   const viewabilityConfig = React.useRef({
     waitForInteraction: true,
     minimumViewTime: 300,
@@ -38,21 +38,6 @@ export const Home = () => {
       });
     }
   );
-  React.useEffect(() => {
-    const fetchAndSetQuestions = async () => {
-      const dataQuestions: Question[] = [];
-      const querySnapshot = await getDocs(
-        collection(db, 'Questions').withConverter(questionConverter)
-      );
-      querySnapshot.forEach((doc) => {
-        dataQuestions.push(doc.data());
-      });
-
-      setQuestions([...questions, ...dataQuestions]);
-      setCurrentQuestion(dataQuestions[0]);
-    };
-    fetchAndSetQuestions();
-  }, []);
 
   return (
     <View style={{ flex: 1 }}>
