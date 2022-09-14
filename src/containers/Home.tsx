@@ -9,13 +9,6 @@ import {
 } from 'react-native';
 import { QuestionCard, PopPlayer } from 'src/components';
 import { theme, globalStyles } from 'src/utils/theme';
-import { useRecoilState } from 'recoil';
-import { currentQuestionState } from 'src/globalStates/atoms';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from 'src/utils/firebase';
-import { questionsState } from 'src/globalStates/atoms/questionsState';
-import { Question } from 'src/types';
-import { questionConverter } from 'src/utils/firebaseConverter';
 import { useQuestion } from 'src/hooks/hook';
 
 export const Home = () => {
