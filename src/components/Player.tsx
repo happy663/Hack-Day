@@ -1,11 +1,11 @@
-import * as React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Audio, AVPlaybackStatusSuccess } from 'expo-av';
-import Slider from '@react-native-community/slider';
-import Icon from 'react-native-vector-icons/Feather';
-import { theme, globalStyles } from 'src/utils/theme';
-import { useRecoilValue } from 'recoil';
-import { currentQuestionState } from 'src/globalStates/atoms';
+import * as React from "react";
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Audio, AVPlaybackStatusSuccess } from "expo-av";
+import Slider from "@react-native-community/slider";
+import Icon from "react-native-vector-icons/Feather";
+import { theme, globalStyles } from "src/utils/theme";
+import { useRecoilValue } from "recoil";
+import { currentQuestionState } from "src/globalStates/atoms";
 
 const isAVPlaybackStatusSuccess = (
   arg: any
@@ -90,11 +90,11 @@ export const Player = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
+    width: "100%",
     paddingHorizontal: 20,
   },
   flexRowBetween: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });

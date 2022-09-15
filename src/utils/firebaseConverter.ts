@@ -4,8 +4,8 @@ import {
   QueryDocumentSnapshot,
   SnapshotOptions,
   serverTimestamp,
-} from 'firebase/firestore';
-import { Question } from 'src/types';
+} from "firebase/firestore";
+import { Question } from "src/types";
 
 export const questionConverter: FirestoreDataConverter<Question> = {
   toFirestore(question: Question): DocumentData {
@@ -22,7 +22,7 @@ export const questionConverter: FirestoreDataConverter<Question> = {
     const data = snapshot.data(options);
 
     return {
-      question_id: data.id,
+      question_id: data.question_id,
       keywords: data.keywords,
       isResolved: data.isResolved,
       voice: data.voice,

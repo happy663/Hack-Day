@@ -3,7 +3,7 @@ import { createNavigationContainerRef } from "@react-navigation/native";
 export type PageRootDefine = {
   Home: undefined;
   NewQuestion: undefined;
-  Chats: undefined;
+  ChatsPage: undefined;
 };
 
 export const AppNavigationRef = createNavigationContainerRef<PageRootDefine>();
