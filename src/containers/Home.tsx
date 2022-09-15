@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   TextInput,
@@ -6,12 +6,12 @@ import {
   FlatList,
   Dimensions,
   ViewToken,
-} from 'react-native';
-import { QuestionCard, PopPlayer } from 'src/components';
-import { theme, globalStyles } from 'src/utils/theme';
-import { useQuestions } from 'src/hooks/useQuestions';
-import { useRecoilValue } from 'recoil';
-import { currentQuestionState } from 'src/globalStates/atoms';
+} from "react-native";
+import { QuestionCard, PopPlayer } from "src/components";
+import { theme, globalStyles } from "src/utils/theme";
+import { useQuestions } from "src/hooks/useQuestions";
+import { useRecoilValue } from "recoil";
+import { currentQuestionState } from "src/globalStates/atoms";
 
 export const Home = () => {
   const { questions, setCurrentQuestion } = useQuestions();
@@ -20,7 +20,7 @@ export const Home = () => {
   const viewabilityConfig = React.useRef({
     waitForInteraction: true,
     minimumViewTime: 300,
-    viewAreaCoveragePercentThreshold: 50,
+    viewAreaCoveragePercentThreshold: 90,
   });
   const onViewableItemsChanged = React.useRef(
     ({
@@ -49,8 +49,8 @@ export const Home = () => {
           onViewableItemsChanged={onViewableItemsChanged.current}
           keyExtractor={(item, index) => `${index}`}
           snapToAlignment="start"
-          // decelerationRate={"normal"}
-          snapToInterval={Dimensions.get('window').width}
+          decelerationRate="normal"
+          snapToInterval={Dimensions.get("window").width}
         />
       </View>
       <View style={{ height: 180, ...styles.containerItem }}>
