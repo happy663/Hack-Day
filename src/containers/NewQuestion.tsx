@@ -1,6 +1,8 @@
 import React from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import Icon from "react-native-vector-icons/Feather";
+import { theme } from "src/utils/theme";
 
 export const NewQuestion = () => {
   return (
@@ -10,7 +12,15 @@ export const NewQuestion = () => {
       start={{ x: 0.5, y: 0.65 }}
     >
       <View style={styles.outsideWave}>
-        <View style={styles.middlesideWave}></View>
+        <View style={styles.middlesideWave}>
+          <View style={styles.insideWave}>
+            <Icon
+              style={styles.microphone}
+              size={theme.iconSize.lg}
+              name={"mic"}
+            />
+          </View>
+        </View>
       </View>
     </LinearGradient>
   );
@@ -37,5 +47,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#e97553",
     justifyContent: "center",
     alignItems: "center",
+  },
+  insideWave: {
+    borderRadius: screenWidth / 2,
+    width: screenWidth / 2.5,
+    height: screenWidth / 2.5,
+    backgroundColor: "#e97553",
+    borderColor: "#ffffff",
+    borderWidth: 3,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  microphone: {
+    color: "#fff",
   },
 });
