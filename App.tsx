@@ -1,15 +1,32 @@
 import { StyleSheet } from "react-native";
 import { Home } from "src/containers";
 import { BaseLayout } from "src/components/layout";
-import { RecoilRoot } from "recoil";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from "@react-navigation/native";
+import { NewQuestion } from "src/containers/NewQuestion";
+import { PageRootDefine } from "src/routes/ApplicationRoutes";
+import React from "react";
+import { AppNavigationRef } from "src/routes/ApplicationRoutes";
+import { Chats } from "src/containers/Chats";
+
+const Tabs = createBottomTabNavigator<PageRootDefine>();
 
 export default function App() {
   return (
-    <RecoilRoot>
+    <NavigationContainer ref={AppNavigationRef}>
       <BaseLayout>
-        <Home />
+        <Tabs.Navigator
+          initialRouteName={"Home"}
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Tabs.Screen name="Home" component={Home} />
+          <Tabs.Screen name="NewQuestion" component={NewQuestion} />
+          <Tabs.Screen name="Chats" component={Chats} />
+        </Tabs.Navigator>
       </BaseLayout>
-    </RecoilRoot>
+    </NavigationContainer>
   );
 }
 
