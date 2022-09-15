@@ -73,7 +73,7 @@ export const Player = () => {
         <Slider
           style={{ flex: 1 }}
           minimumValue={0}
-          // maximumValue={pbs?.durationMillis}
+          maximumValue={currentQuestion.voice.voice_length}
           value={pbs?.positionMillis}
           thumbTintColor="#3F464E"
           minimumTrackTintColor="#3F464E"
