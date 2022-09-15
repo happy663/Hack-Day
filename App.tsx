@@ -17,6 +17,7 @@ export default function App() {
       <BaseLayout>
         <Tabs.Navigator
           initialRouteName={"Home"}
+          tabBar={() => <></>}
           screenOptions={{
             headerShown: false,
           }}
