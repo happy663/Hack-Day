@@ -15,7 +15,6 @@ import { currentQuestionState } from 'src/globalStates/atoms';
 
 export const Home = () => {
   const { questions, setCurrentQuestion } = useQuestions();
-
   const currentQuestion = useRecoilValue(currentQuestionState);
 
   const viewabilityConfig = React.useRef({
@@ -51,7 +50,7 @@ export const Home = () => {
           keyExtractor={(item, index) => `${index}`}
           snapToAlignment="start"
           // decelerationRate={"normal"}
-          snapToInterval={Dimensions.get("window").width}
+          snapToInterval={Dimensions.get('window').width}
         />
       </View>
       <View style={{ height: 180, ...styles.containerItem }}>
