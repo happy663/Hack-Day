@@ -26,13 +26,10 @@ export const QuestionCard = ({
         )}
       </View>
       <View style={styles.profileContainer}>
-        <Image
-          source={require("assets/lefty.png")}
-          style={globalStyles.iconLg}
-        />
+        <Image source={{ uri: user.icon_url }} style={globalStyles.iconLg} />
         <View style={{ paddingLeft: 8 }}>
           <Text style={globalStyles.headingLg}>{user.name}</Text>
-          <Text style={globalStyles.text}>2022/09/11 16:09</Text>
+          <Text style={globalStyles.text}>{created_at.toISOString()}</Text>
         </View>
       </View>
       <View style={styles.tagContainer}>
@@ -46,7 +43,11 @@ export const QuestionCard = ({
         <Text style={styles.summaryText}>{voice.summary_text}</Text>
       </View>
       <View style={styles.answerCountContainer}>
-        <Text style={styles.answerCountText}>3件の回答がつきました</Text>
+        <Text style={styles.answerCountText}>
+          {answer_count > 0
+            ? `${answer_count}件の回答がつきました`
+            : "回答はまだありません💦"}
+        </Text>
       </View>
     </LinearGradient>
   );

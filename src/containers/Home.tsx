@@ -92,7 +92,7 @@ const questions = [
       confidence: 0.9373192191123962,
     },
     colors: ["#d4fc79", "#96e6a1"],
-    answer_count: 0,
+    answer_count: 1,
     created_at: new Date("2022-09-14T23:39:55.228878"),
     user: {
       uid: "aaa",
@@ -106,7 +106,7 @@ const questions = [
   {
     question_id: "385518dd-dc50-4e34-bbf6-d44588de56c4",
     keywords: ["10代", "女性", "雪の日"],
-    isResolved: false,
+    isResolved: true,
     voice: {
       status: "SUCCESS",
       message: "問題ありません",
@@ -137,7 +137,7 @@ const questions = [
       confidence: 0.9373192191123962,
     },
     colors: ["#fccb90", "#d57eeb"],
-    answer_count: 0,
+    answer_count: 3,
     created_at: new Date("2022-09-14T23:39:55.228878"),
     user: {
       uid: "aaa",
@@ -189,7 +189,7 @@ export const Home = () => {
           onViewableItemsChanged={onViewableItemsChanged.current}
           keyExtractor={(item) => item.question_id}
           snapToAlignment="start"
-          decelerationRate={"normal"}
+          // decelerationRate={"normal"}
           snapToInterval={Dimensions.get("window").width}
         />
       </View>
