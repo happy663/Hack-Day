@@ -4,6 +4,8 @@ import { Audio, AVPlaybackStatusSuccess } from 'expo-av';
 import Slider from '@react-native-community/slider';
 import Icon from 'react-native-vector-icons/Feather';
 import { theme, globalStyles } from 'src/utils/theme';
+import { useRecoilValue } from 'recoil';
+import { currentQuestionState } from 'src/globalStates/atoms';
 
 const isAVPlaybackStatusSuccess = (
   arg: any
@@ -14,16 +16,17 @@ const isAVPlaybackStatusSuccess = (
 export const Player = () => {
   const [sound, setSound] = React.useState<Audio.Sound>();
   const [pbs, setPbs] = React.useState<AVPlaybackStatusSuccess>();
+  const currentQuestion = useRecoilValue(currentQuestionState);
 
   const initSound = async () => {
     const { sound } = await Audio.Sound.createAsync({
-      uri: 'https://amachamusic.chagasi.com/mp3/yume.mp3',
+      uri: currentQuestion.voice.file_url,
     });
     setSound(sound);
   };
   React.useEffect(() => {
     initSound();
-  }, []);
+  }, [currentQuestion]);
 
   React.useEffect(() => {
     sound &&

@@ -28,7 +28,7 @@ export const questionConverter: FirestoreDataConverter<Question> = {
       voice: data.voice,
       answer_count: data.answer_count,
       colors: data.colors,
-      created_at: data.created_at,
+      created_at: new Date(data.created_at.seconds * 1000),
       user: data.user,
     };
   },
