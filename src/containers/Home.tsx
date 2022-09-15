@@ -50,8 +50,8 @@ export const Home = () => {
           onViewableItemsChanged={onViewableItemsChanged.current}
           keyExtractor={(item, index) => `${index}`}
           snapToAlignment="start"
-          decelerationRate={'normal'}
-          snapToInterval={Dimensions.get('window').width}
+          // decelerationRate={"normal"}
+          snapToInterval={Dimensions.get("window").width}
         />
       </View>
       <View style={{ height: 180, ...styles.containerItem }}>
