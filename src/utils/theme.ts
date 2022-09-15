@@ -21,14 +21,17 @@ export const globalStyles = StyleSheet.create({
   iconSm: {
     height: 24,
     width: 24,
+    borderRadius: 12,
   },
   iconMd: {
     height: 48,
     width: 48,
+    borderRadius: 24,
   },
   iconLg: {
     height: 60,
     width: 60,
+    borderRadius: 30,
   },
   flexCenter: {
     alignItems: "center",

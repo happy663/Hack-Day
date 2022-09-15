@@ -15,33 +15,29 @@ export const PopPlayer = () => {
       style={styles.popPlayerContainer}
     >
       <View style={styles.flexItemFullWidth}>
-        <HelpButton />
+        <View style={{ height: 48, ...globalStyles.flexRowCenter }}>
+          <TouchableOpacity
+            style={styles.helpButton}
+            onPress={() => console.log("pressed")}
+          >
+            <Image
+              source={{ uri: currentQuestion.user.icon_url }}
+              style={globalStyles.iconMd}
+            />
+            <Text style={globalStyles.headingMd}>
+              {currentQuestion.user.name}さんを助ける!
+            </Text>
+            <Image
+              source={require("assets/lefty.png")}
+              style={globalStyles.iconMd}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
       <View style={styles.flexItemFullWidth}>
         <Player />
       </View>
     </LinearGradient>
-  );
-};
-
-const HelpButton = () => {
-  return (
-    <View style={{ height: 48, ...globalStyles.flexRowCenter }}>
-      <TouchableOpacity
-        style={styles.helpButton}
-        onPress={() => console.log("pressed")}
-      >
-        <Image
-          source={require("assets/lefty.png")}
-          style={globalStyles.iconMd}
-        />
-        <Text style={globalStyles.headingMd}>〇〇さんを助ける!</Text>
-        <Image
-          source={require("assets/lefty.png")}
-          style={globalStyles.iconMd}
-        />
-      </TouchableOpacity>
-    </View>
   );
 };
 
