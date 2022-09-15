@@ -8,26 +8,29 @@ import { PageRootDefine } from "src/routes/ApplicationRoutes";
 import React from "react";
 import { AppNavigationRef } from "src/routes/ApplicationRoutes";
 import { Chats } from "src/containers/Chats";
+import { RecoilRoot } from "recoil";
 
 const Tabs = createBottomTabNavigator<PageRootDefine>();
 
 export default function App() {
   return (
-    <NavigationContainer ref={AppNavigationRef}>
-      <BaseLayout>
-        <Tabs.Navigator
-          initialRouteName={"Home"}
-          tabBar={() => <></>}
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Tabs.Screen name="Home" component={Home} />
-          <Tabs.Screen name="NewQuestion" component={NewQuestion} />
-          <Tabs.Screen name="Chats" component={Chats} />
-        </Tabs.Navigator>
-      </BaseLayout>
-    </NavigationContainer>
+    <RecoilRoot>
+      <NavigationContainer ref={AppNavigationRef}>
+        <BaseLayout>
+          <Tabs.Navigator
+            initialRouteName={"Home"}
+            tabBar={() => <></>}
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Tabs.Screen name="Home" component={Home} />
+            <Tabs.Screen name="NewQuestion" component={NewQuestion} />
+            <Tabs.Screen name="Chats" component={Chats} />
+          </Tabs.Navigator>
+        </BaseLayout>
+      </NavigationContainer>
+    </RecoilRoot>
   );
 }
 

@@ -1,11 +1,12 @@
 import { StyleSheet, Image, Text, TouchableOpacity, View } from "react-native";
 import { theme, globalStyles } from "src/utils/theme";
 import Icon from "react-native-vector-icons/Feather";
+import { navigate } from "src/routes/ApplicationRoutes";
 
 export const NavigationBar = () => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.item}>
+      <TouchableOpacity style={styles.item} onPress={() => navigate("Home")}>
         <Icon
           name="home"
           size={theme.iconSize.sm}
@@ -14,7 +15,7 @@ export const NavigationBar = () => {
         <Text style={styles.caption}>ホーム</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.item}>
+      <TouchableOpacity style={styles.item} onPress={() => navigate("Chats")}>
         <Icon
           name="message-square"
           size={theme.iconSize.sm}
@@ -25,6 +26,7 @@ export const NavigationBar = () => {
 
       <TouchableOpacity
         style={{ ...styles.item, transform: [{ translateY: -8 }] }}
+        onPress={() => navigate("NewQuestion")}
       >
         <View style={styles.iconButton}>
           <Icon name="plus" size={28} style={{ color: theme.colors.white }} />
