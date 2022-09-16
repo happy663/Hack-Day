@@ -1,20 +1,17 @@
-import * as React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Audio, AVPlaybackStatusSuccess } from 'expo-av';
-import Slider from '@react-native-community/slider';
-import Icon from 'react-native-vector-icons/Feather';
-import { theme, globalStyles } from 'src/utils/theme';
-import { useRecoilState } from 'recoil';
-import { currentVoiceState } from 'src/globalStates/atoms';
-
-import { Voice } from 'src/types';
-import { usePlayer } from 'src/hooks/usePlayer';
-
-const isAVPlaybackStatusSuccess = (
-  arg: any
-): arg is AVPlaybackStatusSuccess => {
-  return arg.positionMillis !== undefined;
-};
+import * as React from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Animated,
+} from "react-native";
+import { Audio } from "expo-av";
+import Slider from "@react-native-community/slider";
+import Icon from "react-native-vector-icons/Feather";
+import { theme, globalStyles } from "src/utils/theme";
+import { Voice } from "src/types";
+import { usePlayer } from "src/hooks/usePlayer";
 
 export const Player = ({
   voice,
@@ -32,6 +29,7 @@ export const Player = ({
     setCurrentVoice,
     realTimeText,
     setRealTimeText,
+    animation,
   } = usePlayer(voice, getSound);
 
   return (
@@ -58,9 +56,17 @@ export const Player = ({
             />
           )}
         </TouchableOpacity>
-        <Text style={{ flex: 1, marginLeft: 12, ...globalStyles.textBold }}>
+        <Animated.Text
+          style={{
+            flex: 1,
+            marginLeft: 12,
+            transform: [{ translateY: animation.translateY }],
+            opacity: animation.opacity,
+            ...globalStyles.textBold,
+          }}
+        >
           {realTimeText}
-        </Text>
+        </Animated.Text>
       </View>
       <View style={{ height: 36 }}>
         <Slider
@@ -83,11 +89,11 @@ export const Player = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
+    width: "100%",
     paddingHorizontal: 20,
   },
   flexRowBetween: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
