@@ -55,7 +55,7 @@ export const usePlayer = (
 
   React.useEffect(() => {
     //segmentから2分探索で文字列を探してrealTimeTextにセットする
-    const segment = currentVoice?.segments;
+    const segment = voice?.segments;
     const positionMillis = pbs?.positionMillis;
     if (segment && positionMillis) {
       let left = 0;
@@ -75,9 +75,11 @@ export const usePlayer = (
         setRealTimeText(segment[left - 1].text);
       }
     }
-
-    // setRealTimeText('判別暫定');
   }, [pbs]);
+
+  React.useEffect(() => {
+    setRealTimeText(voice?.segments[0].text);
+  }, []);
 
   return {
     sound,
