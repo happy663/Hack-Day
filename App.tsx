@@ -18,7 +18,7 @@ export default function App() {
       <NavigationContainer ref={AppNavigationRef}>
         <BaseLayout>
           <Tabs.Navigator
-            initialRouteName={"Home"}
+            initialRouteName={"NewQuestion"}
             tabBar={() => <></>}
             screenOptions={{
               headerShown: false,

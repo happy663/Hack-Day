@@ -1,22 +1,22 @@
 import { atom, selector } from "recoil";
 
-export type RecordingResultType = "SUCCESS" | "NG_WORD" | "TOO_SHORT_VOICE";
+export type RecognizeResultType = "SUCCESS" | "NG_WORD" | "TOO_SHORT_VOICE";
+export type RecordingStatus = "ready" | "recording" | "recording_faild";
 
-export const isRecordingState = atom({
+export const recordingState = atom<RecordingStatus>({
   key: "isRecordingState",
-  default: false,
+  default: "ready",
 });
 
 export type NewQuestionScreenState =
-  | "ready"
-  | "recording"
-  | "recognizing"
-  | RecordingResultType;
+  | RecordingStatus
+  | RecognizeResultType
+  | "recognizing";
 
 export const newQuestionState = selector<NewQuestionScreenState>({
   key: "newQuestionState",
   get: ({ get }) => {
-    const isRecording = get(isRecordingState);
+    const isRecording = get(recordingState);
 
     if (isRecording) return "recording";
     return "ready";
