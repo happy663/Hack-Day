@@ -71,4 +71,14 @@ export const globalStyles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 3,
   },
+  boxShadowLg: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.4,
+    shadowRadius: 15,
+    elevation: 7,
+  },
 });
