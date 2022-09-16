@@ -1,12 +1,16 @@
 import React from "react";
-import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
+import { StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "src/utils/theme";
-import { MicrophoneOnCircle } from "src/components";
+import { MicrophoneOnCircle, Prompt } from "src/components";
+import { useRecoilState } from "recoil";
+import { isRecordingState } from "src/globalStates/atoms/newQuestionState";
 
 export interface NewQuestionProps {}
 
 export const NewQuestion = () => {
+  const [isRecording, _] = useRecoilState(isRecordingState);
+
   return (
     <LinearGradient
       style={styles.root}
@@ -14,9 +18,7 @@ export const NewQuestion = () => {
       start={{ x: 0.5, y: 0.65 }}
     >
       <MicrophoneOnCircle />
-      <View style={styles.promptLayout}>
-        <Text style={styles.promptText}>どんな助けが必要？</Text>
-      </View>
+      <Prompt>{isRecording ? "質問中……" : "ご相談はなんでしょうか？"}</Prompt>
     </LinearGradient>
   );
 };
