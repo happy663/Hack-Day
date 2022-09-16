@@ -1,14 +1,10 @@
-import { StyleSheet } from "react-native";
-import { Home } from "src/containers";
-import { BaseLayout } from "src/components/layout";
+import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-import { NewQuestion } from "src/containers/NewQuestion";
-import { PageRootDefine } from "src/routes/ApplicationRoutes";
-import React from "react";
-import { AppNavigationRef } from "src/routes/ApplicationRoutes";
-import { Chats } from "src/containers/Chats";
 import { RecoilRoot } from "recoil";
+import { PageRootDefine, AppNavigationRef } from "src/routes/ApplicationRoutes";
+import { Home, ChatsPage, NewQuestion } from "src/containers";
+import { Header, NavigationBar } from "src/components/layout";
 
 const Tabs = createBottomTabNavigator<PageRootDefine>();
 
@@ -16,29 +12,19 @@ export default function App() {
   return (
     <RecoilRoot>
       <NavigationContainer ref={AppNavigationRef}>
-        <BaseLayout>
-          <Tabs.Navigator
-            initialRouteName={"NewQuestion"}
-            tabBar={() => <></>}
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            <Tabs.Screen name="Home" component={Home} />
-            <Tabs.Screen name="NewQuestion" component={NewQuestion} />
-            <Tabs.Screen name="Chats" component={Chats} />
-          </Tabs.Navigator>
-        </BaseLayout>
+        <Header />
+        <Tabs.Navigator
+          initialRouteName={"Home"}
+          tabBar={(props) => <NavigationBar {...props} />}
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Tabs.Screen name="Home" component={Home} />
+          <Tabs.Screen name="NewQuestion" component={NewQuestion} />
+          <Tabs.Screen name="ChatsPage" component={ChatsPage} />
+        </Tabs.Navigator>
       </NavigationContainer>
     </RecoilRoot>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

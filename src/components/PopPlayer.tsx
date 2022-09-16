@@ -3,41 +3,68 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Player } from "./Player";
 import { theme, globalStyles } from "src/utils/theme";
-import { useRecoilState } from "recoil";
-import { currentQuestionState } from "src/globalStates/atoms";
+import { useRecoilValue, useRecoilState } from "recoil";
+import {
+  currentQuestionState,
+  currentVoiceState,
+} from "src/globalStates/atoms";
+import { navigate } from "src/routes/ApplicationRoutes";
+import { Audio } from "expo-av";
+import { useFocusEffect } from "@react-navigation/native";
 
 export const PopPlayer = () => {
-  const [currentQuestion, setCurrentQuestion] =
-    useRecoilState(currentQuestionState);
+  const currentQuestion = useRecoilValue(currentQuestionState);
+  const [currentVoice, setCurrentVoice] = useRecoilState(currentVoiceState);
+  const [sound, setSound] = React.useState<Audio.Sound>();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      sound && sound.playAsync();
+      setCurrentVoice(currentQuestion?.voice);
+    }, [sound])
+  );
+
   return (
-    <LinearGradient
-      colors={currentQuestion.colors}
-      style={styles.popPlayerContainer}
-    >
-      <View style={styles.flexItemFullWidth}>
-        <View style={{ height: 48, ...globalStyles.flexRowCenter }}>
-          <TouchableOpacity
-            style={styles.helpButton}
-            onPress={() => console.log("pressed")}
-          >
-            <Image
-              source={{ uri: currentQuestion.user.icon_url }}
-              style={globalStyles.iconMd}
+    <>
+      {currentQuestion?.question_id ? (
+        <LinearGradient
+          colors={currentQuestion.colors}
+          style={styles.popPlayerContainer}
+        >
+          <View style={styles.flexItemFullWidth}>
+            <View style={{ height: 48, ...globalStyles.flexRowCenter }}>
+              <TouchableOpacity
+                style={styles.helpButton}
+                onPress={() => {
+                  sound && sound.pauseAsync();
+                  navigate("ChatsPage");
+                }}
+              >
+                <Image
+                  source={{ uri: currentQuestion.user.icon_url }}
+                  style={globalStyles.iconMd}
+                />
+                <Text style={globalStyles.headingMd}>
+                  {currentQuestion.user.name}さんを助ける!
+                </Text>
+                <Image
+                  source={require("assets/lefty.png")}
+                  style={globalStyles.iconMd}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.flexItemFullWidth}>
+            <Player
+              voice={currentQuestion?.voice}
+              getSound={(s) => setSound(s)}
             />
-            <Text style={globalStyles.headingMd}>
-              {currentQuestion.user.name}さんを助ける!
-            </Text>
-            <Image
-              source={require("assets/lefty.png")}
-              style={globalStyles.iconMd}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.flexItemFullWidth}>
-        <Player />
-      </View>
-    </LinearGradient>
+          </View>
+        </LinearGradient>
+      ) : (
+        <></>
+      )}
+    </>
   );
 };
 

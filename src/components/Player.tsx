@@ -1,52 +1,43 @@
-import * as React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Audio, AVPlaybackStatusSuccess } from 'expo-av';
-import Slider from '@react-native-community/slider';
-import Icon from 'react-native-vector-icons/Feather';
-import { theme, globalStyles } from 'src/utils/theme';
-import { useRecoilValue } from 'recoil';
-import { currentQuestionState } from 'src/globalStates/atoms';
+import * as React from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Animated,
+} from "react-native";
+import { Audio } from "expo-av";
+import Slider from "@react-native-community/slider";
+import Icon from "react-native-vector-icons/Feather";
+import { theme, globalStyles } from "src/utils/theme";
+import { Voice } from "src/types";
+import { usePlayer } from "src/hooks/usePlayer";
 
-const isAVPlaybackStatusSuccess = (
-  arg: any
-): arg is AVPlaybackStatusSuccess => {
-  return arg.positionMillis !== undefined;
-};
-
-export const Player = () => {
-  const [sound, setSound] = React.useState<Audio.Sound>();
-  const [pbs, setPbs] = React.useState<AVPlaybackStatusSuccess>();
-  const currentQuestion = useRecoilValue(currentQuestionState);
-
-  const initSound = async () => {
-    const { sound } = await Audio.Sound.createAsync({
-      uri: currentQuestion.voice.file_url,
-    });
-    setSound(sound);
-  };
-  React.useEffect(() => {
-    initSound();
-  }, [currentQuestion]);
-
-  React.useEffect(() => {
-    sound &&
-      sound.setOnPlaybackStatusUpdate((currentPbs) => {
-        if (isAVPlaybackStatusSuccess(currentPbs)) {
-          setPbs(currentPbs);
-        }
-      });
-    return sound
-      ? () => {
-          sound.unloadAsync();
-        }
-      : undefined;
-  }, [sound]);
+export const Player = ({
+  voice,
+  getSound,
+}: {
+  voice: Voice;
+  getSound?: (sound: Audio.Sound) => void;
+}) => {
+  const {
+    sound,
+    setSound,
+    pbs,
+    setPbs,
+    currentVoice,
+    setCurrentVoice,
+    realTimeText,
+    setRealTimeText,
+    animation,
+  } = usePlayer(voice, getSound);
 
   return (
     <View style={styles.container}>
       <View style={{ height: 48, ...styles.flexRowBetween }}>
         <TouchableOpacity
           onPress={() => {
+            setCurrentVoice(voice);
             if (!pbs?.isPlaying) sound && sound.playAsync();
             else sound && sound.pauseAsync();
           }}
@@ -65,15 +56,23 @@ export const Player = () => {
             />
           )}
         </TouchableOpacity>
-        <Text style={{ flex: 1, marginLeft: 12, ...globalStyles.textBold }}>
-          席替えで私の後ろの席に友達が座っていて、その子の隣に私の好きな人が座っています。
-        </Text>
+        <Animated.Text
+          style={{
+            flex: 1,
+            marginLeft: 12,
+            transform: [{ translateY: animation.translateY }],
+            opacity: animation.opacity,
+            ...globalStyles.textBold,
+          }}
+        >
+          {realTimeText}
+        </Animated.Text>
       </View>
       <View style={{ height: 36 }}>
         <Slider
           style={{ flex: 1 }}
           minimumValue={0}
-          maximumValue={currentQuestion.voice.voice_length}
+          maximumValue={voice.voice_length}
           value={pbs?.positionMillis}
           thumbTintColor="#3F464E"
           minimumTrackTintColor="#3F464E"
@@ -90,11 +89,11 @@ export const Player = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
+    width: "100%",
     paddingHorizontal: 20,
   },
   flexRowBetween: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });

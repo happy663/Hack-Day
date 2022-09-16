@@ -5,7 +5,7 @@ import {
   SnapshotOptions,
   serverTimestamp,
 } from 'firebase/firestore';
-import { Question } from 'src/types';
+import { Chat, Question } from 'src/types';
 
 export const questionConverter: FirestoreDataConverter<Question> = {
   toFirestore(question: Question): DocumentData {
@@ -22,7 +22,7 @@ export const questionConverter: FirestoreDataConverter<Question> = {
     const data = snapshot.data(options);
 
     return {
-      question_id: data.id,
+      question_id: data.question_id,
       keywords: data.keywords,
       isResolved: data.isResolved,
       voice: data.voice,
@@ -30,6 +30,27 @@ export const questionConverter: FirestoreDataConverter<Question> = {
       colors: data.colors,
       created_at: new Date(data.created_at.seconds * 1000),
       user: data.user,
+    };
+  },
+};
+
+export const chatConverter: FirestoreDataConverter<Chat> = {
+  toFirestore(chat: Chat): DocumentData {
+    return {};
+  },
+
+  fromFirestore(
+    snapshot: QueryDocumentSnapshot,
+    options: SnapshotOptions
+  ): Chat {
+    const data = snapshot.data(options);
+    return {
+      chats_id: data.chats_id,
+      question_id: data.question_id,
+      created_at: new Date(data.created_at.seconds * 1000),
+      type: data.type,
+      user: data.user,
+      voice: data.voice,
     };
   },
 };
