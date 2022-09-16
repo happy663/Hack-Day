@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { theme } from "src/utils/theme";
 import { Dimensions, View, StyleSheet, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
@@ -11,15 +11,13 @@ import {
 interface MicrophoneOnCircle {
   mainColor?: string;
   subColor?: string;
-  onPress?: (recordingState: RecStatus) => void;
+  onPress?: (isRecording: boolean) => void;
 }
 
 export const MicrophoneOnCircle = (props: MicrophoneOnCircle) => {
-  const [recState, setRecState] = useRecoilState(recordingState);
+  const [isRecording, setIsRecording] = useState<boolean>(false);
 
   const styles = generateStyles(props.mainColor, props.subColor);
-
-  const isRecording = recState === "recording";
 
   return (
     <View style={styles.outsideWave}>
@@ -27,11 +25,10 @@ export const MicrophoneOnCircle = (props: MicrophoneOnCircle) => {
         <TouchableOpacity
           style={[styles.microphoneBox, isRecording && styles.isRecordingBox]}
           onPress={() => {
-            setRecState((currentVal) => {
-              const nextState = "ready" === currentVal ? "recording" : "ready";
-              props.onPress && props.onPress(nextState);
-              return nextState;
-            });
+            const nextState = !isRecording;
+            setIsRecording(nextState);
+            props.onPress && props.onPress(nextState);
+            return nextState;
           }}
         >
           <Icon
