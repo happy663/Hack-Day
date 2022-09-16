@@ -9,8 +9,11 @@ import {
   newQuestionState,
 } from "src/globalStates/atoms/newQuestionState";
 import { Audio } from "expo-av";
-import { audioInitalize } from "src/audio/recording";
-import * as FileSystem from "expo-file-system";
+import {
+  audioInitalize,
+  startRecording,
+  postNewQuestion,
+} from "src/audio/recording";
 
 export interface NewQuestionProps {}
 
@@ -33,52 +36,6 @@ export const NewQuestion = () => {
     TOO_SHORT_VOICE: "質問が短すぎます",
   };
 
-  async function startRecording() {
-    setScreenStatus("recording");
-    await Audio.setAudioModeAsync({
-      allowsRecordingIOS: true,
-      playsInSilentModeIOS: true,
-    });
-    await Audio.Recording.createAsync(
-      Audio.RecordingOptionsPresets.HIGH_QUALITY,
-      (recordingStatus) => {}
-    )
-      .then(({ recording }) => {
-        setQuestionRecord(recording);
-      })
-      .catch((error) => {
-        setScreenStatus("recording_faild");
-        setQuestionRecord(undefined);
-      });
-    return;
-  }
-
-  const uploadNewQuestion = async (recordFileURI: string) => {
-    setScreenStatus("recognizing");
-    const url = "https://hackday.kajilab.tk/upload";
-    try {
-      const response = await FileSystem.uploadAsync(url, recordFileURI, {
-        uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-        httpMethod: "POST",
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        fieldName: "file",
-        parameters: {
-          user_id: "6kSDkE0SNvWuVbiSVg8W",
-          is_answer: "false",
-          type: "questioner",
-        },
-      });
-      const newQuestion = JSON.parse(response.body);
-      console.log(response);
-      setScreenStatus(newQuestion.voice.status);
-    } catch (error) {
-      console.log(error);
-      setScreenStatus("recognizing_faild");
-    }
-  };
-
   return (
     <LinearGradient
       style={styles.root}
@@ -91,7 +48,17 @@ export const NewQuestion = () => {
 
           console.log(isRecording);
           if (isRecording) {
-            startRecording();
+            const startRec = async () => {
+              setScreenStatus("recording");
+              const record = await startRecording();
+              setQuestionRecord(record);
+            };
+            try {
+              startRec();
+            } catch {
+              setScreenStatus("recording_faild");
+              setQuestionRecord(undefined);
+            }
           } else {
             console.log("Stopping recording..", questionRecord);
 
@@ -108,11 +75,19 @@ export const NewQuestion = () => {
                 return;
               }
 
-              uploadNewQuestion(recordFileURI);
-              setQuestionRecord(undefined);
+              const uploadQuestion = async () => {
+                try {
+                  setScreenStatus("recognizing");
+                  const newQuestion = await postNewQuestion(recordFileURI);
+                  setScreenStatus(newQuestion.voice.status);
+                  setQuestionRecord(undefined);
+                } catch {
+                  setScreenStatus("recording_faild");
+                  setQuestionRecord(undefined);
+                }
+              };
+              uploadQuestion();
             });
-
-            setQuestionRecord(undefined);
           }
         }}
       />
