@@ -3,12 +3,27 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Player } from "./Player";
 import { theme, globalStyles } from "src/utils/theme";
-import { useRecoilValue } from "recoil";
-import { currentQuestionState } from "src/globalStates/atoms";
+import { useRecoilValue, useRecoilState } from "recoil";
+import {
+  currentQuestionState,
+  currentVoiceState,
+} from "src/globalStates/atoms";
 import { navigate } from "src/routes/ApplicationRoutes";
+import { Audio } from "expo-av";
+import { useFocusEffect } from "@react-navigation/native";
 
 export const PopPlayer = () => {
   const currentQuestion = useRecoilValue(currentQuestionState);
+  const [currentVoice, setCurrentVoice] = useRecoilState(currentVoiceState);
+  const [sound, setSound] = React.useState<Audio.Sound>();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      sound && sound.playAsync();
+      setCurrentVoice(currentQuestion?.voice);
+    }, [sound])
+  );
+
   return (
     <>
       {currentQuestion?.question_id ? (
@@ -20,7 +35,10 @@ export const PopPlayer = () => {
             <View style={{ height: 48, ...globalStyles.flexRowCenter }}>
               <TouchableOpacity
                 style={styles.helpButton}
-                onPress={() => navigate("ChatsPage")}
+                onPress={() => {
+                  sound && sound.pauseAsync();
+                  navigate("ChatsPage");
+                }}
               >
                 <Image
                   source={{ uri: currentQuestion.user.icon_url }}
@@ -37,7 +55,10 @@ export const PopPlayer = () => {
             </View>
           </View>
           <View style={styles.flexItemFullWidth}>
-            <Player />
+            <Player
+              voice={currentQuestion?.voice}
+              getSound={(s) => setSound(s)}
+            />
           </View>
         </LinearGradient>
       ) : (

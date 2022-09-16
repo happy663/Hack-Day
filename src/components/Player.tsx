@@ -4,8 +4,10 @@ import { Audio, AVPlaybackStatusSuccess } from "expo-av";
 import Slider from "@react-native-community/slider";
 import Icon from "react-native-vector-icons/Feather";
 import { theme, globalStyles } from "src/utils/theme";
-import { useRecoilValue } from "recoil";
-import { currentQuestionState } from "src/globalStates/atoms";
+import { useRecoilState } from "recoil";
+import { currentVoiceState } from "src/globalStates/atoms";
+
+import { Voice } from "src/types";
 
 const isAVPlaybackStatusSuccess = (
   arg: any
@@ -13,20 +15,32 @@ const isAVPlaybackStatusSuccess = (
   return arg.positionMillis !== undefined;
 };
 
-export const Player = () => {
+export const Player = ({
+  voice,
+  getSound,
+}: {
+  voice: Voice;
+  getSound?: (sound: Audio.Sound) => void;
+}) => {
   const [sound, setSound] = React.useState<Audio.Sound>();
   const [pbs, setPbs] = React.useState<AVPlaybackStatusSuccess>();
-  const currentQuestion = useRecoilValue(currentQuestionState);
+  const [currentVoice, setCurrentVoice] = useRecoilState(currentVoiceState);
 
   const initSound = async () => {
     const { sound } = await Audio.Sound.createAsync({
-      uri: currentQuestion.voice.file_url,
+      uri: voice.file_url,
     });
     setSound(sound);
+    sound && getSound && getSound(sound);
   };
+
+  React.useEffect(() => {
+    if (currentVoice?.file_url !== voice.file_url) sound && sound.pauseAsync();
+  }, [currentVoice]);
+
   React.useEffect(() => {
     initSound();
-  }, [currentQuestion]);
+  }, [voice?.file_url]);
 
   React.useEffect(() => {
     sound &&
@@ -47,6 +61,7 @@ export const Player = () => {
       <View style={{ height: 48, ...styles.flexRowBetween }}>
         <TouchableOpacity
           onPress={() => {
+            setCurrentVoice(voice);
             if (!pbs?.isPlaying) sound && sound.playAsync();
             else sound && sound.pauseAsync();
           }}
@@ -73,7 +88,7 @@ export const Player = () => {
         <Slider
           style={{ flex: 1 }}
           minimumValue={0}
-          maximumValue={currentQuestion.voice.voice_length}
+          maximumValue={voice.voice_length}
           value={pbs?.positionMillis}
           thumbTintColor="#3F464E"
           minimumTrackTintColor="#3F464E"

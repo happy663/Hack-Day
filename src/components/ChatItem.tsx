@@ -43,7 +43,7 @@ export const ChatItem = ({ type, created_at, user, voice }: Chat) => {
             ...styles.chatContentContainer,
           }}
         >
-          <Player />
+          <Player voice={voice} />
         </View>
       </View>
     </View>

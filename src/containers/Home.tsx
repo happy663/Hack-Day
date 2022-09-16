@@ -11,12 +11,16 @@ import { QuestionCard, PopPlayer } from "src/components";
 import { theme, globalStyles } from "src/utils/theme";
 import { useQuestions } from "src/hooks/useQuestions";
 import { useRecoilState } from "recoil";
-import { currentQuestionState } from "src/globalStates/atoms";
+import {
+  currentQuestionState,
+  currentVoiceState,
+} from "src/globalStates/atoms";
 
 export const Home = () => {
   const questions = useQuestions();
   const [currentQuestion, setCurrentQuestion] =
     useRecoilState(currentQuestionState);
+  const [currentVoice, setCurrentVoice] = useRecoilState(currentVoiceState);
 
   const viewabilityConfig = React.useRef({
     waitForInteraction: true,
@@ -33,6 +37,7 @@ export const Home = () => {
     }) => {
       viewableItems.forEach((viewableItem) => {
         setCurrentQuestion({ ...viewableItem.item });
+        setCurrentVoice({ ...viewableItem.item.voice });
       });
     }
   );
