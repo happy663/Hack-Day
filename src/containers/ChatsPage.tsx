@@ -16,7 +16,6 @@ import { useRecoilValue } from "recoil";
 import { currentQuestionState } from "src/globalStates/atoms";
 import { format } from "date-fns";
 import Icon from "react-native-vector-icons/Feather";
-
 import { useFocusEffect } from "@react-navigation/native";
 
 export const ChatsPage = () => {
@@ -25,6 +24,7 @@ export const ChatsPage = () => {
     Dimensions.get("window").height - 300
   );
   const animation = useRef(startPosition).current;
+
   useFocusEffect(
     React.useCallback(() => {
       Animated.sequence([
@@ -74,7 +74,7 @@ export const ChatsPage = () => {
             </Text>
           ))}
         </View>
-        <Player />
+        <Player voice={currentQuestion?.voice} />
       </LinearGradient>
       <LinearGradient
         colors={currentQuestion.colors}
@@ -191,7 +191,7 @@ const testData = [
         },
       ],
       file_url:
-        "https://storage.googleapis.com/hackday-4daec.appspot.com/answers/6kSDkE0SNvWuVbiSVg8W/74b98649-b354-416c-aa24-59ca9f6ccce4.wav",
+        "https://storage.googleapis.com/hackday-4daec.appspot.com/answers/m5z14rK1o4BX17O62pbI/c34bf3c7-c1b0-42db-aade-2165d7fce5cc.wav",
       confidence: 0.9373192191123962,
     },
     question_id: "oglSYeCixREXmDGbZc8L",
@@ -235,7 +235,7 @@ const testData = [
         },
       ],
       file_url:
-        "https://storage.googleapis.com/hackday-4daec.appspot.com/answers/6kSDkE0SNvWuVbiSVg8W/74b98649-b354-416c-aa24-59ca9f6ccce4.wav",
+        "https://storage.googleapis.com/hackday-4daec.appspot.com/answers/6kSDkE0SNvWuVbiSVg8W/a04a7358-5337-45aa-9987-61a798fe67af.wav",
       confidence: 0.9373192191123962,
     },
     question_id: "oglSYeCixREXmDGbZc8L",
@@ -279,7 +279,7 @@ const testData = [
         },
       ],
       file_url:
-        "https://storage.googleapis.com/hackday-4daec.appspot.com/answers/6kSDkE0SNvWuVbiSVg8W/74b98649-b354-416c-aa24-59ca9f6ccce4.wav",
+        "https://storage.googleapis.com/hackday-4daec.appspot.com/questions/6kSDkE0SNvWuVbiSVg8W/1c7c56b4-3a4d-4ce0-9100-750c351a0cd3.wav",
       confidence: 0.9373192191123962,
     },
     question_id: "oglSYeCixREXmDGbZc8L",
@@ -323,7 +323,7 @@ const testData = [
         },
       ],
       file_url:
-        "https://storage.googleapis.com/hackday-4daec.appspot.com/answers/6kSDkE0SNvWuVbiSVg8W/74b98649-b354-416c-aa24-59ca9f6ccce4.wav",
+        "https://storage.googleapis.com/hackday-4daec.appspot.com/answers/m5z14rK1o4BX17O62pbI/c8e4f756-dfb4-4391-ae55-63be2f12313a.wav",
       confidence: 0.9373192191123962,
     },
     question_id: "oglSYeCixREXmDGbZc8L",
