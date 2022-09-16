@@ -1,3 +1,5 @@
+import { RecognizeStatus } from "src/globalStates/atoms/newQuestionState";
+
 export interface User {
   uid: string;
   name: string;
@@ -18,8 +20,25 @@ export interface Question {
   user: User;
 }
 
+function isQuestion(obj: Object): obj is Question {
+  let judge = true;
+  [
+    "question_id",
+    "keywords",
+    "isResolved",
+    "voice",
+    "answer_count",
+    "colors",
+    "created_at",
+    "user",
+  ].forEach((key) => {
+    judge *= Object.prototype.hasOwnProperty(key);
+  });
+  return judge;
+}
+
 export interface Voice {
-  status: string; // SUCCESS / NG_WORD / TOO_SHORT_VOICE
+  status: RecognizeStatus; // SUCCESS / NG_WORD / TOO_SHORT_VOICE
   message: string; // m　/ NGワード〇〇が含まれています / ボイスが短すぎます
   text: string; // 文字起こし結果全文
   text_length: number; // 上記の文字数
