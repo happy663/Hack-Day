@@ -1,12 +1,9 @@
-import * as React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Audio, AVPlaybackStatusSuccess } from 'expo-av';
-import Slider from '@react-native-community/slider';
-import Icon from 'react-native-vector-icons/Feather';
-import { theme, globalStyles } from 'src/utils/theme';
-import { useRecoilState } from 'recoil';
-import { currentVoiceState } from 'src/globalStates/atoms';
-import { Voice } from 'src/types';
+import * as React from "react";
+import { Animated } from "react-native";
+import { Audio, AVPlaybackStatusSuccess } from "expo-av";
+import { useRecoilState } from "recoil";
+import { currentVoiceState } from "src/globalStates/atoms";
+import { Voice } from "src/types";
 
 const isAVPlaybackStatusSuccess = (
   arg: any
@@ -21,7 +18,12 @@ export const usePlayer = (
   const [sound, setSound] = React.useState<Audio.Sound>();
   const [pbs, setPbs] = React.useState<AVPlaybackStatusSuccess>();
   const [currentVoice, setCurrentVoice] = useRecoilState(currentVoiceState);
-  const [realTimeText, setRealTimeText] = React.useState<string>('');
+  const [realTimeText, setRealTimeText] = React.useState<string>("");
+
+  const animation = React.useRef({
+    translateY: new Animated.Value(0),
+    opacity: new Animated.Value(1),
+  }).current;
 
   const initSound = async () => {
     const { sound } = await Audio.Sound.createAsync({
@@ -73,7 +75,40 @@ export const usePlayer = (
       if (segment[left - 1] == undefined) {
         setRealTimeText(segment[0].text);
       } else {
-        setRealTimeText(segment[left - 1].text);
+        if (realTimeText !== segment[left - 1].text) {
+          Animated.parallel([
+            Animated.sequence([
+              Animated.timing(animation.translateY, {
+                toValue: -30,
+                duration: 200,
+                useNativeDriver: true,
+              }),
+              Animated.timing(animation.translateY, {
+                toValue: 30,
+                duration: 0,
+                useNativeDriver: true,
+              }),
+              Animated.timing(animation.translateY, {
+                toValue: 0,
+                duration: 200,
+                useNativeDriver: true,
+              }),
+            ]),
+            Animated.sequence([
+              Animated.timing(animation.opacity, {
+                toValue: 0,
+                duration: 200,
+                useNativeDriver: true,
+              }),
+              Animated.timing(animation.opacity, {
+                toValue: 1,
+                duration: 200,
+                useNativeDriver: true,
+              }),
+            ]),
+          ]).start();
+          setRealTimeText(segment[left - 1].text);
+        }
       }
     }
   }, [pbs]);
@@ -87,5 +122,6 @@ export const usePlayer = (
     setCurrentVoice,
     realTimeText,
     setRealTimeText,
+    animation,
   };
 };
