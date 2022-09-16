@@ -33,6 +33,7 @@ export const usePlayer = (
 
   React.useEffect(() => {
     if (currentVoice?.file_url !== voice.file_url) sound && sound.pauseAsync();
+    setRealTimeText(voice?.segments[0].text);
   }, [currentVoice]);
 
   React.useEffect(() => {
@@ -76,10 +77,6 @@ export const usePlayer = (
       }
     }
   }, [pbs]);
-
-  React.useEffect(() => {
-    setRealTimeText(voice?.segments[0].text);
-  }, []);
 
   return {
     sound,
