@@ -21,6 +21,15 @@ export async function startRecording() {
   return recording;
 }
 
+export async function getRecordingFileURI(
+  questionRecord: Audio.Recording
+): Promise<[Audio.RecordingStatus, string]> {
+  const status = await questionRecord.stopAndUnloadAsync();
+  const recordFileURI = questionRecord.getURI();
+  if (!recordFileURI) throw new Error("record file uri not found.");
+  return [status, recordFileURI];
+}
+
 export const postNewQuestion = async (recordFileURI: string) => {
   const url = "https://hackday.kajilab.tk/upload";
   const response = await FileSystem.uploadAsync(url, recordFileURI, {

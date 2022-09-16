@@ -13,6 +13,7 @@ import {
   audioInitalize,
   startRecording,
   postNewQuestion,
+  getRecordingFileURI,
 } from "src/audio/recording";
 
 export interface NewQuestionProps {}
@@ -36,6 +37,18 @@ export const NewQuestion = () => {
     TOO_SHORT_VOICE: "質問が短すぎます",
   };
 
+  async function uploadQuestion(recordFileURI: string) {
+    try {
+      setScreenStatus("recognizing");
+      const newQuestion = await postNewQuestion(recordFileURI);
+      setScreenStatus(newQuestion.voice.status);
+      setQuestionRecord(undefined);
+    } catch {
+      setScreenStatus("recording_faild");
+      setQuestionRecord(undefined);
+    }
+  }
+
   return (
     <LinearGradient
       style={styles.root}
@@ -46,7 +59,6 @@ export const NewQuestion = () => {
         onPress={(isRecording) => {
           if (screenStatus === "recognizing") return;
 
-          console.log(isRecording);
           if (isRecording) {
             const startRec = async () => {
               setScreenStatus("recording");
@@ -67,27 +79,18 @@ export const NewQuestion = () => {
               return;
             }
 
-            questionRecord.stopAndUnloadAsync().then((status) => {
-              const recordFileURI = questionRecord.getURI();
-              if (!status.isDoneRecording || !recordFileURI) {
+            const stopAndUploadRecord = async () => {
+              const [status, fileURI] = await getRecordingFileURI(
+                questionRecord
+              );
+              if (!status.isDoneRecording || !fileURI) {
                 setScreenStatus("recording_faild");
                 setQuestionRecord(undefined);
                 return;
               }
-
-              const uploadQuestion = async () => {
-                try {
-                  setScreenStatus("recognizing");
-                  const newQuestion = await postNewQuestion(recordFileURI);
-                  setScreenStatus(newQuestion.voice.status);
-                  setQuestionRecord(undefined);
-                } catch {
-                  setScreenStatus("recording_faild");
-                  setQuestionRecord(undefined);
-                }
-              };
-              uploadQuestion();
-            });
+              uploadQuestion(fileURI);
+            };
+            stopAndUploadRecord();
           }
         }}
       />
