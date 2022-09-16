@@ -13,17 +13,12 @@ export const useChats = () => {
     const fetchAndSetChats = async () => {
       const arrayChats: Chat[] = [];
       try {
-        console.log(currentQuestion.question_id);
-
         const q = query(
           collection(db, 'Chats').withConverter(chatConverter),
           where('question_id', '==', currentQuestion.question_id)
         );
         const querySnapshot = await getDocs(q);
-        console.log(querySnapshot);
-
         querySnapshot.forEach((doc) => {
-          console.log(doc.id, ' => ', doc.data());
           arrayChats.push(doc.data());
         });
         setChats(arrayChats);
