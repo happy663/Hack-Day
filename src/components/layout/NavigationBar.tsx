@@ -1,25 +1,43 @@
+import React from "react";
 import { StyleSheet, Image, Text, TouchableOpacity, View } from "react-native";
 import { theme, globalStyles } from "src/utils/theme";
 import Icon from "react-native-vector-icons/Feather";
 import { navigate } from "src/routes/ApplicationRoutes";
+import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 
-export const NavigationBar = () => {
+export const NavigationBar = ({
+  state,
+  descriptors,
+  navigation,
+}: BottomTabBarProps) => {
+  const currentPage = state.routes[state.index].name;
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.item} onPress={() => navigate("Home")}>
         <Icon
           name="home"
           size={theme.iconSize.sm}
-          style={{ color: theme.colors.main }}
+          style={{
+            color:
+              currentPage === "Home" ? theme.colors.main : theme.colors.black,
+          }}
         />
         <Text style={styles.caption}>ホーム</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.item} onPress={() => navigate("Chats")}>
+      <TouchableOpacity
+        style={styles.item}
+        onPress={() => console.log("pressed answered")}
+      >
         <Icon
           name="message-square"
           size={theme.iconSize.sm}
-          style={{ color: theme.colors.black }}
+          style={{
+            color:
+              currentPage === "Answered"
+                ? theme.colors.main
+                : theme.colors.black,
+          }}
         />
         <Text style={styles.caption}>回答</Text>
       </TouchableOpacity>
@@ -28,8 +46,22 @@ export const NavigationBar = () => {
         style={{ ...styles.item, transform: [{ translateY: -8 }] }}
         onPress={() => navigate("NewQuestion")}
       >
-        <View style={styles.iconButton}>
-          <Icon name="plus" size={28} style={{ color: theme.colors.white }} />
+        <View
+          style={{
+            ...styles.iconButton,
+            borderColor:
+              currentPage === "NewQuestion"
+                ? theme.colors.main
+                : theme.colors.white,
+          }}
+        >
+          <Icon
+            name="plus"
+            size={28}
+            style={{
+              color: theme.colors.white,
+            }}
+          />
         </View>
         <Text style={styles.caption}>質問する</Text>
       </TouchableOpacity>
@@ -38,7 +70,12 @@ export const NavigationBar = () => {
         <Icon
           name="bell"
           size={theme.iconSize.sm}
-          style={{ color: theme.colors.black }}
+          style={{
+            color:
+              currentPage === "Notification"
+                ? theme.colors.main
+                : theme.colors.black,
+          }}
         />
         <Text style={styles.caption}>通知</Text>
       </TouchableOpacity>
@@ -49,7 +86,8 @@ export const NavigationBar = () => {
         <View
           style={{
             ...styles.iconImageButton,
-            backgroundColor: theme.colors.white,
+            backgroundColor:
+              currentPage === "MyPage" ? theme.colors.main : theme.colors.white,
           }}
         >
           <Image
@@ -83,7 +121,6 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 100,
-    borderColor: theme.colors.white,
     borderWidth: 4,
     backgroundColor: theme.colors.main,
     ...globalStyles.flexCenter,

@@ -3,41 +3,47 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Player } from "./Player";
 import { theme, globalStyles } from "src/utils/theme";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { currentQuestionState } from "src/globalStates/atoms";
+import { navigate } from "src/routes/ApplicationRoutes";
 
 export const PopPlayer = () => {
-  const [currentQuestion, setCurrentQuestion] =
-    useRecoilState(currentQuestionState);
+  const currentQuestion = useRecoilValue(currentQuestionState);
   return (
-    <LinearGradient
-      colors={currentQuestion.colors}
-      style={styles.popPlayerContainer}
-    >
-      <View style={styles.flexItemFullWidth}>
-        <View style={{ height: 48, ...globalStyles.flexRowCenter }}>
-          <TouchableOpacity
-            style={styles.helpButton}
-            onPress={() => console.log("pressed")}
-          >
-            <Image
-              source={{ uri: currentQuestion.user.icon_url }}
-              style={globalStyles.iconMd}
-            />
-            <Text style={globalStyles.headingMd}>
-              {currentQuestion.user.name}さんを助ける!
-            </Text>
-            <Image
-              source={require("assets/lefty.png")}
-              style={globalStyles.iconMd}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.flexItemFullWidth}>
-        <Player />
-      </View>
-    </LinearGradient>
+    <>
+      {currentQuestion?.question_id ? (
+        <LinearGradient
+          colors={currentQuestion.colors}
+          style={styles.popPlayerContainer}
+        >
+          <View style={styles.flexItemFullWidth}>
+            <View style={{ height: 48, ...globalStyles.flexRowCenter }}>
+              <TouchableOpacity
+                style={styles.helpButton}
+                onPress={() => navigate("ChatsPage")}
+              >
+                <Image
+                  source={{ uri: currentQuestion.user.icon_url }}
+                  style={globalStyles.iconMd}
+                />
+                <Text style={globalStyles.headingMd}>
+                  {currentQuestion.user.name}さんを助ける!
+                </Text>
+                <Image
+                  source={require("assets/lefty.png")}
+                  style={globalStyles.iconMd}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.flexItemFullWidth}>
+            <Player />
+          </View>
+        </LinearGradient>
+      ) : (
+        <></>
+      )}
+    </>
   );
 };
 
