@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-import { RecoilRoot, useRecoilValue, useSetRecoilState } from "recoil";
+import { RecoilRoot, useRecoilValue } from "recoil";
 import { PageRootDefine, AppNavigationRef } from "src/routes/ApplicationRoutes";
 import { Home, ChatsPage, NewQuestion } from "src/containers";
 import { Header, NavigationBar } from "src/components/layout";
