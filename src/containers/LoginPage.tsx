@@ -1,10 +1,39 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { theme } from 'src/utils/theme';
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithCredential,
+} from 'firebase/auth';
+import { useEffect } from 'react';
+import * as React from 'react';
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
+
+WebBrowser.maybeCompleteAuthSession();
 
 export const LoginPages = () => {
+  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+    clientId:
+      '33897607847-vose6bcm5sa9rngvahi2ugrvbube1mjc.apps.googleusercontent.com',
+  });
+  useEffect(() => {
+    if (response?.type === 'success') {
+      const { id_token } = response.params;
+      const auth = getAuth();
+      const credential = GoogleAuthProvider.credential(id_token);
+      signInWithCredential(auth, credential);
+    }
+  }, [response]);
+
   return (
     <View style={styles.loginBuottnLayout}>
-      <TouchableOpacity style={styles.loginButton} onPress={() => {}}>
+      <TouchableOpacity
+        style={styles.loginButton}
+        onPress={() => {
+          promptAsync();
+        }}
+      >
         <Image
           source={require('assets/google.png')}
           style={{
