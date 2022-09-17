@@ -33,7 +33,7 @@ export const NewQuestion = () => {
     recognizing_faild: "文字起こしに失敗",
     recording_faild: "録音に失敗しました",
     SUCCESS: "完了しました",
-    NG_WORD: "心ない言葉を使ってるようです",
+    NG_WORD: "心ない言葉を\n使ってるようです",
     TOO_SHORT_VOICE: "質問が短すぎます",
   };
 
