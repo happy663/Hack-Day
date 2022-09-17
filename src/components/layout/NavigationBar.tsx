@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Image, Text, TouchableOpacity, View } from "react-native";
 import { theme, globalStyles } from "src/utils/theme";
 import Icon from "react-native-vector-icons/Feather";
 import { navigate } from "src/routes/ApplicationRoutes";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { userState } from "src/globalStates/atoms/userState";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { currentPageState } from "src/globalStates/atoms/currentPage";
 
 export const NavigationBar = ({
   state,
@@ -14,6 +15,11 @@ export const NavigationBar = ({
 }: BottomTabBarProps) => {
   const currentPage = state.routes[state.index].name;
   const user = useRecoilValue(userState);
+  const setCurrentPageGlobalState = useSetRecoilState(currentPageState);
+
+  useEffect(() => {
+    setCurrentPageGlobalState(currentPage);
+  }, [currentPage]);
 
   return (
     <View style={styles.container}>

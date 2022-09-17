@@ -40,9 +40,9 @@ export const QuestionCard = ({
       </View>
       <View style={styles.tagContainer}>
         {keywords?.map((keyword, index) => (
-          <Text style={styles.tag} key={index}>
-            {keyword}
-          </Text>
+          <View style={styles.tag} key={index}>
+            <Text>{keyword}</Text>
+          </View>
         ))}
       </View>
       <View style={styles.summaryContainer}>

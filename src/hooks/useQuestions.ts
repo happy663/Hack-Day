@@ -1,13 +1,15 @@
 import React from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { questionsState } from "src/globalStates/atoms";
 import { Question } from "src/types";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { questionConverter } from "src/utils/firebaseConverter";
 import { db } from "src/utils/firebase";
+import { currentPageState } from "src/globalStates/atoms/currentPage";
 
 export const useQuestions = () => {
   const [questions, setQuestions] = useRecoilState(questionsState);
+  const currentPage = useRecoilValue(currentPageState);
 
   React.useEffect(() => {
     const fetchAndSetQuestions = async () => {
@@ -21,7 +23,7 @@ export const useQuestions = () => {
       setQuestions([...arrayQuestion]);
     };
     fetchAndSetQuestions();
-  }, []);
+  }, [currentPage]);
 
   return questions;
 };
