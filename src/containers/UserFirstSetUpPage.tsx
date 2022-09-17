@@ -24,6 +24,7 @@ import {
   where,
 } from "firebase/firestore";
 import { firebaseUserState } from "src/globalStates/atoms/firebaseUserState";
+import { isNewUserState } from "src/globalStates/atoms/isNewUserState";
 
 export const UserFirstSetUpPage = () => {
   const [name, setName] = React.useState("");
@@ -41,6 +42,7 @@ export const UserFirstSetUpPage = () => {
   ];
 
   const firebaseUser = useRecoilValue(firebaseUserState);
+  const setIsNewUser = useSetRecoilState(isNewUserState);
 
   //新規登録
   const registerUser = async () => {
@@ -48,12 +50,13 @@ export const UserFirstSetUpPage = () => {
       try {
         await setDoc(doc(db, "Users", firebaseUser.uid), {
           uid: firebaseUser?.uid,
-          name: firebaseUser?.displayName,
+          name: name,
           icon_URL: firebaseUser?.photoURL,
           birth_year: birthYear,
           gender: gender,
           introduction: introduction,
         });
+        setIsNewUser(false);
       } catch (error) {
         console.log(error);
       }
@@ -142,7 +145,12 @@ export const UserFirstSetUpPage = () => {
           justifyContent: "center",
         }}
       >
-        <TouchableOpacity style={styles.submitButton} onPress={() => {}}>
+        <TouchableOpacity
+          style={styles.submitButton}
+          onPress={() => {
+            registerUser();
+          }}
+        >
           <Text
             style={{
               fontSize: 24,

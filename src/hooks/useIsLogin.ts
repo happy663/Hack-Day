@@ -12,10 +12,11 @@ import {
   setDoc,
   where,
 } from "firebase/firestore";
+import { isNewUserState } from "src/globalStates/atoms/isNewUserState";
 
 export const useIsLogin = () => {
   const [isLogin, setIsLogin] = useState<boolean | undefined>();
-  const [isNewUser, setIsNewUser] = useState<boolean | undefined>();
+  const setIsNewUser = useSetRecoilState(isNewUserState);
 
   const setFirebaseUser = useSetRecoilState(firebaseUserState);
   useEffect(() => {
@@ -38,5 +39,5 @@ export const useIsLogin = () => {
     });
   }, [setFirebaseUser]);
 
-  return { isLogin, isNewUser };
+  return isLogin;
 };
