@@ -10,8 +10,7 @@ import {
 import Icon from "react-native-vector-icons/Feather";
 
 interface MicrophoneOnCircle {
-  mainColor?: string;
-  subColor?: string;
+  waveColor: string;
   onPress?: (isRecording: boolean) => void;
 }
 
@@ -22,7 +21,7 @@ export const MicrophoneOnCircle = (props: MicrophoneOnCircle) => {
     opacity: new Animated.Value(0),
   }).current;
   const micAnim = React.useRef(new Animated.Value(1)).current;
-  const bgColor = "#E76F51";
+  const bgColor = props.waveColor;
 
   const animation = Animated.loop(
     Animated.parallel([

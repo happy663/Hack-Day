@@ -9,6 +9,8 @@ export interface User {
   gender: string; //デフォルト：未設定？
 }
 
+export type SpeakerType = "questioner" | "respondent" | "thank_you";
+
 export interface Question {
   question_id: string;
   keywords: string[]; // 10代, 女性, おでん
@@ -20,7 +22,7 @@ export interface Question {
   user: User;
 }
 
-function isQuestion(obj: Object): obj is Question {
+export function isQuestion(obj: Object): obj is Question {
   let judge = true;
   [
     "question_id",
@@ -32,7 +34,7 @@ function isQuestion(obj: Object): obj is Question {
     "created_at",
     "user",
   ].forEach((key) => {
-    judge *= Object.prototype.hasOwnProperty(key);
+    judge = judge && Object.prototype.hasOwnProperty(key);
   });
   return judge;
 }

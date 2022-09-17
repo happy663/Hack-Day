@@ -9,8 +9,12 @@ import {
   newQuestionState,
 } from "src/globalStates/atoms/newQuestionState";
 import { Audio } from "expo-av";
-import { audioInitalize } from "src/audio/recording";
-import * as FileSystem from "expo-file-system";
+import {
+  audioInitalize,
+  startRecording,
+  postQuestion,
+  getRecordingFileURI,
+} from "src/audio/recording";
 
 export interface NewQuestionProps {}
 
@@ -33,65 +37,61 @@ export const NewQuestion = () => {
     TOO_SHORT_VOICE: "質問が短すぎます",
   };
 
-  async function startRecording() {
-    setScreenStatus("recording");
-    await Audio.setAudioModeAsync({
-      allowsRecordingIOS: true,
-      playsInSilentModeIOS: true,
-    });
-    await Audio.Recording.createAsync(
-      Audio.RecordingOptionsPresets.HIGH_QUALITY,
-      (recordingStatus) => {}
-    )
-      .then(({ recording }) => {
-        setQuestionRecord(recording);
-      })
-      .catch((error) => {
-        setScreenStatus("recording_faild");
-        setQuestionRecord(undefined);
-      });
-    return;
+  function stateToColors() {
+    const defaultColors: string[] = ["#F4A261", "#E9C46A"];
+    const badColors: string[] = ["#274653", "#287170"];
+    const colors = {
+      ready: defaultColors,
+      recording: defaultColors,
+      recognizing: defaultColors,
+      recognizing_faild: badColors,
+      recording_faild: badColors,
+      SUCCESS: defaultColors,
+      NG_WORD: badColors,
+      TOO_SHORT_VOICE: badColors,
+    };
+    return colors;
   }
 
-  const uploadNewQuestion = async (recordFileURI: string) => {
-    setScreenStatus("recognizing");
-    const url = "https://hackday.kajilab.tk/upload";
+  async function uploadQuestion(recordFileURI: string) {
     try {
-      const response = await FileSystem.uploadAsync(url, recordFileURI, {
-        uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-        httpMethod: "POST",
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        fieldName: "file",
-        parameters: {
-          user_id: "6kSDkE0SNvWuVbiSVg8W",
-          is_answer: "false",
-          type: "questioner",
-        },
-      });
-      const newQuestion = JSON.parse(response.body);
-      console.log(response);
+      setScreenStatus("recognizing");
+      const newQuestion = await postQuestion(
+        recordFileURI,
+        "6kSDkE0SNvWuVbiSVg8W",
+        false
+      );
       setScreenStatus(newQuestion.voice.status);
-    } catch (error) {
-      console.log(error);
-      setScreenStatus("recognizing_faild");
+      setQuestionRecord(undefined);
+    } catch {
+      setScreenStatus("recording_faild");
+      setQuestionRecord(undefined);
     }
-  };
+  }
 
   return (
     <LinearGradient
       style={styles.root}
-      colors={["#F4A261", "#E9C46A"]}
+      colors={stateToColors()[screenStatus]}
       start={{ x: 0.5, y: 0.65 }}
     >
       <MicrophoneOnCircle
+        waveColor={stateToColors()[screenStatus][1]}
         onPress={(isRecording) => {
           if (screenStatus === "recognizing") return;
 
-          console.log(isRecording);
           if (isRecording) {
-            startRecording();
+            const startRec = async () => {
+              setScreenStatus("recording");
+              const record = await startRecording();
+              setQuestionRecord(record);
+            };
+            try {
+              startRec();
+            } catch {
+              setScreenStatus("recording_faild");
+              setQuestionRecord(undefined);
+            }
           } else {
             console.log("Stopping recording..", questionRecord);
 
@@ -100,19 +100,18 @@ export const NewQuestion = () => {
               return;
             }
 
-            questionRecord.stopAndUnloadAsync().then((status) => {
-              const recordFileURI = questionRecord.getURI();
-              if (!status.isDoneRecording || !recordFileURI) {
+            const stopAndUploadRecord = async () => {
+              const [status, fileURI] = await getRecordingFileURI(
+                questionRecord
+              );
+              if (!status.isDoneRecording || !fileURI) {
                 setScreenStatus("recording_faild");
                 setQuestionRecord(undefined);
                 return;
               }
-
-              uploadNewQuestion(recordFileURI);
-              setQuestionRecord(undefined);
-            });
-
-            setQuestionRecord(undefined);
+              uploadQuestion(fileURI);
+            };
+            stopAndUploadRecord();
           }
         }}
       />
