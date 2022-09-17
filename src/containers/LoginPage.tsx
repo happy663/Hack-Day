@@ -1,24 +1,24 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { theme } from 'src/utils/theme';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { theme } from "src/utils/theme";
 import {
   getAuth,
   GoogleAuthProvider,
   signInWithCredential,
-} from 'firebase/auth';
-import { useEffect } from 'react';
-import * as React from 'react';
-import * as WebBrowser from 'expo-web-browser';
-import * as Google from 'expo-auth-session/providers/google';
+} from "firebase/auth";
+import { useEffect } from "react";
+import * as React from "react";
+import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
 
 WebBrowser.maybeCompleteAuthSession();
 
 export const LoginPages = () => {
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
     clientId:
-      '33897607847-vose6bcm5sa9rngvahi2ugrvbube1mjc.apps.googleusercontent.com',
+      "686458940555-tpvlodoaogbqf87gbkpb6c07m6jogojq.apps.googleusercontent.com",
   });
   useEffect(() => {
-    if (response?.type === 'success') {
+    if (response?.type === "success") {
       const { id_token } = response.params;
       const auth = getAuth();
       const credential = GoogleAuthProvider.credential(id_token);
@@ -35,7 +35,7 @@ export const LoginPages = () => {
         }}
       >
         <Image
-          source={require('assets/google.png')}
+          source={require("assets/google.png")}
           style={{
             marginHorizontal: 10,
             height: 36,
@@ -57,17 +57,17 @@ export const LoginPages = () => {
 const styles = StyleSheet.create({
   loginBuottnLayout: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   loginButton: {
     backgroundColor: theme.colors.main,
     flexGrow: 0.7,
     height: 48,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    justifyContent: "center",
+    flexDirection: "row",
     borderRadius: 16,
-    alignItems: 'center',
+    alignItems: "center",
   },
 });
