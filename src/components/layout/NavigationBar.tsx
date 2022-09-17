@@ -4,6 +4,8 @@ import { theme, globalStyles } from "src/utils/theme";
 import Icon from "react-native-vector-icons/Feather";
 import { navigate } from "src/routes/ApplicationRoutes";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { userState } from "src/globalStates/atoms/userState";
+import { useRecoilValue } from "recoil";
 
 export const NavigationBar = ({
   state,
@@ -11,6 +13,8 @@ export const NavigationBar = ({
   navigation,
 }: BottomTabBarProps) => {
   const currentPage = state.routes[state.index].name;
+  const user = useRecoilValue(userState);
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.item} onPress={() => navigate("Home")}>
@@ -91,7 +95,11 @@ export const NavigationBar = ({
           }}
         >
           <Image
-            source={require("assets/lefty.png")}
+            source={
+              user?.icon_url
+                ? { uri: user.icon_url }
+                : require("assets/lefty.png")
+            }
             style={{ ...globalStyles.iconSm }}
           />
         </View>
