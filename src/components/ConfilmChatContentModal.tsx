@@ -3,26 +3,41 @@ import { Text, Modal, View, Pressable, FlatList } from "react-native";
 import { theme } from "src/utils/theme";
 import { StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { Chat } from "src/types";
 
 export interface ConfilmChatContentModal {
   modalVisiblity: boolean;
+  createdChat: Chat | null;
   onRequestClose: () => void;
   onPressCancel: () => void;
   onPressSend: () => void;
 }
 
 export const ConfilmChatContentModal = (props: ConfilmChatContentModal) => {
-  const { modalVisiblity, onRequestClose, onPressCancel, onPressSend } = props;
+  const {
+    modalVisiblity,
+    createdChat,
+    onRequestClose,
+    onPressCancel,
+    onPressSend,
+  } = props;
 
-  const createdChat = {
+  const testCreatedChat = {
     voice: {
       segments: [
-        "こんにちは",
-        "私の名前はnullです",
-        "きょうはみなさんをNullpointerexceptionで苦しめるためにやってきました．",
+        {
+          text: "こんにちは",
+        },
+        {
+          text: "私の名前はnullです",
+        },
+        {
+          text: "きょうはみなさんをNullpointerexceptionで苦しめるためにやってきました．",
+        },
       ],
     },
   };
+  const tmpCreatedChat = createdChat || testCreatedChat;
 
   return (
     <Modal
@@ -76,9 +91,9 @@ export const ConfilmChatContentModal = (props: ConfilmChatContentModal) => {
             <Text style={styles.summaryHeader}>要約テキスト</Text>
             <FlatList
               style={styles.summaryBox}
-              data={createdChat ? createdChat.voice.segments : []}
+              data={tmpCreatedChat ? tmpCreatedChat.voice.segments : []}
               renderItem={(info) => (
-                <Text style={styles.summaryText}>{info.item}</Text>
+                <Text style={styles.summaryText}>{info.item.text}</Text>
               )}
             />
           </View>

@@ -3,7 +3,7 @@ import { theme, globalStyles } from "src/utils/theme";
 import { Text, TouchableOpacity, Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { StyleSheet } from "react-native";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { currentQuestionState } from "src/globalStates/atoms";
 import {
   getRecordingFileURI,
@@ -12,9 +12,9 @@ import {
 } from "src/audio/recording";
 import { Audio } from "expo-av";
 import { useChats } from "src/hooks/useChats";
-import { ChatItem } from "./ChatItem";
 import { Chat } from "src/types";
 import { ConfilmChatContentModal } from "./ConfilmChatContentModal";
+import { userState } from "src/globalStates/atoms/userState";
 
 export const ResponseButton = () => {
   const [isRecording, setIsRecording] = useState<boolean>(false);
@@ -22,8 +22,11 @@ export const ResponseButton = () => {
     null
   );
   const { chats, setChats } = useChats();
-  const [modalVisible, setModalVisible] = useState<boolean>(true);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [createdChat, setCreatedChat] = useState<Chat | null>(null);
+
+  // const user = useRecoilValue(userState);
+  // console.log(user, "user");
 
   const currentQuestion = useRecoilValue(currentQuestionState);
 
@@ -39,9 +42,8 @@ export const ResponseButton = () => {
 
     try {
       const [status, recordURI] = await getRecordingFileURI(answerRecord);
-      if (!status.isDoneRecording) {
-        return;
-      }
+      if (!status.isDoneRecording) return;
+      // if (!user) return;
       const answer = await postQuestion(
         recordURI,
         currentQuestion.user.uid,
@@ -49,7 +51,6 @@ export const ResponseButton = () => {
         currentQuestion.question_id,
         "respondent"
       );
-      console.log(11234, answer);
       if (answer.voice && answer.voice.status === "SUCCESS") {
         console.log(answer, chats);
         setCreatedChat(answer);
@@ -82,6 +83,7 @@ export const ResponseButton = () => {
           setModalVisible(false);
         }}
         modalVisiblity={modalVisible}
+        createdChat={createdChat}
       />
       <TouchableOpacity
         style={styles.responseButton}
