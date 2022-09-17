@@ -4,14 +4,7 @@ import { useSetRecoilState } from "recoil";
 import { firebaseUserState } from "src/globalStates/atoms/firebaseUserState";
 import { useState } from "react";
 import { app, db } from "src/utils/firebase";
-import {
-  collection,
-  doc,
-  getDocs,
-  query,
-  setDoc,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { isNewUserState } from "src/globalStates/atoms/isNewUserState";
 
 export const useIsLogin = () => {

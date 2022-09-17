@@ -10,19 +10,9 @@ import {
 } from "react-native";
 import { useRecoilValue } from "recoil";
 import { theme } from "src/utils/theme";
-import { onAuthStateChanged, getAuth } from "firebase/auth";
-import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
-import { useState } from "react";
-import { app, db } from "src/utils/firebase";
-import {
-  collection,
-  doc,
-  getDocs,
-  query,
-  setDoc,
-  where,
-} from "firebase/firestore";
+import { db } from "src/utils/firebase";
+import { doc, setDoc } from "firebase/firestore";
 import { firebaseUserState } from "src/globalStates/atoms/firebaseUserState";
 import { isNewUserState } from "src/globalStates/atoms/isNewUserState";
 

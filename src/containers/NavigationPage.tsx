@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-import { RecoilRoot, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { PageRootDefine, AppNavigationRef } from "src/routes/ApplicationRoutes";
 import { Home, ChatsPage, NewQuestion } from "src/containers";
 import { Header, NavigationBar } from "src/components/layout";
-import { Text, View } from "react-native";
 import { LoginPages } from "src/containers/LoginPage";
 import { useIsLogin } from "src/hooks/useIsLogin";
-import { firebaseUserState } from "src/globalStates/atoms/firebaseUserState";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { UserFirstSetUpPage } from "src/containers/UserFirstSetUpPage";
 import { isNewUserState } from "src/globalStates/atoms/isNewUserState";
 
