@@ -15,6 +15,7 @@ import { db } from "src/utils/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { firebaseUserState } from "src/globalStates/atoms/firebaseUserState";
 import { isNewUserState } from "src/globalStates/atoms/isNewUserState";
+import { userState } from "src/globalStates/atoms/userState";
 
 export const UserFirstSetUpPage = () => {
   const [name, setName] = React.useState("");
@@ -33,6 +34,7 @@ export const UserFirstSetUpPage = () => {
 
   const firebaseUser = useRecoilValue(firebaseUserState);
   const setIsNewUser = useSetRecoilState(isNewUserState);
+  const setUser = useSetRecoilState(userState);
 
   //新規登録
   const registerUser = async () => {
@@ -47,6 +49,15 @@ export const UserFirstSetUpPage = () => {
           introduction: introduction,
         });
         setIsNewUser(false);
+        setUser({
+          uid: firebaseUser?.uid,
+          name: name,
+          icon_url:
+            firebaseUser?.photoURL == null ? "" : firebaseUser?.photoURL,
+          birth_year: birthYear,
+          gender: gender,
+          introduction: introduction,
+        });
       } catch (error) {
         console.log(error);
       }
@@ -109,11 +120,7 @@ export const UserFirstSetUpPage = () => {
       >
         {years.map((year, index) => {
           return (
-            <Picker.Item
-              key={index}
-              label={year.toString()}
-              value={year.toString()}
-            />
+            <Picker.Item key={index} label={year.toString()} value={year} />
           );
         })}
       </Picker>

@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "src/utils/theme";
 import { MicrophoneOnCircle, Prompt } from "src/components";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   NewQuestionScreenState,
   newQuestionScreenState,
@@ -15,12 +15,15 @@ import {
   postQuestion,
   getRecordingFileURI,
 } from "src/audio/recording";
+import { userState } from "src/globalStates/atoms/userState";
 
 export interface NewQuestionProps {}
 
 export const NewQuestion = () => {
   const [questionRecord, setQuestionRecord] = React.useState<Audio.Recording>();
   const [screenState, setScreenState] = useRecoilState(newQuestionScreenState);
+  const user = useRecoilValue(userState);
+  console.log("user", user);
 
   useEffect(() => {
     audioInitalize();
@@ -54,13 +57,10 @@ export const NewQuestion = () => {
   }
 
   async function uploadQuestion(recordFileURI: string) {
+    if (!user) return;
     try {
       setScreenState("recognizing");
-      const newQuestion = await postQuestion(
-        recordFileURI,
-        "6kSDkE0SNvWuVbiSVg8W",
-        false
-      );
+      const newQuestion = await postQuestion(recordFileURI, user.uid, false);
       setScreenState(newQuestion.voice.status);
       setQuestionRecord(undefined);
     } catch {

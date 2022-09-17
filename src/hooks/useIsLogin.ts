@@ -27,6 +27,7 @@ export const useIsLogin = () => {
         //fireStoreにユーザが存在しない場合
         if (querySnapshot.size === 0) {
           setIsNewUser(true);
+          
         } else {
           //fireStoreにユーザが存在する場合
           setIsNewUser(false);

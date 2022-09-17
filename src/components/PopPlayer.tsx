@@ -11,12 +11,14 @@ import {
 import { navigate } from "src/routes/ApplicationRoutes";
 import { Audio } from "expo-av";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
+import { userState } from "src/globalStates/atoms/userState";
 
 export const PopPlayer = () => {
   const currentQuestion = useRecoilValue(currentQuestionState);
   const [currentVoice, setCurrentVoice] = useRecoilState(currentVoiceState);
   const [sound, setSound] = React.useState<Audio.Sound>();
   const isFocused = useIsFocused();
+  const user = useRecoilValue(userState);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -53,7 +55,11 @@ export const PopPlayer = () => {
                   {currentQuestion.user.name}さんを助ける!
                 </Text>
                 <Image
-                  source={require("assets/lefty.png")}
+                  source={
+                    user?.icon_url
+                      ? { uri: user.icon_url }
+                      : require("assets/lefty.png")
+                  }
                   style={globalStyles.iconMd}
                 />
               </TouchableOpacity>
