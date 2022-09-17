@@ -27,7 +27,7 @@ export const useChats = () => {
       }
     };
     fetchAndSetChats();
-  }, [currentQuestion]);
+  }, [chats, currentQuestion]);
 
   return { chats, setChats };
 };
