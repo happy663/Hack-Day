@@ -21,17 +21,14 @@ export const globalStyles = StyleSheet.create({
   iconSm: {
     height: 24,
     width: 24,
-    borderRadius: 12,
   },
   iconMd: {
     height: 48,
     width: 48,
-    borderRadius: 24,
   },
   iconLg: {
     height: 60,
     width: 60,
-    borderRadius: 30,
   },
   flexCenter: {
     alignItems: "center",
@@ -70,15 +67,5 @@ export const globalStyles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 6,
     elevation: 3,
-  },
-  boxShadowLg: {
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.4,
-    shadowRadius: 15,
-    elevation: 7,
   },
 });
