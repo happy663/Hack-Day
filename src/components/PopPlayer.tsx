@@ -10,12 +10,13 @@ import {
 } from "src/globalStates/atoms";
 import { navigate } from "src/routes/ApplicationRoutes";
 import { Audio } from "expo-av";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 
 export const PopPlayer = () => {
   const currentQuestion = useRecoilValue(currentQuestionState);
   const [currentVoice, setCurrentVoice] = useRecoilState(currentVoiceState);
   const [sound, setSound] = React.useState<Audio.Sound>();
+  const isFocused = useIsFocused();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -23,6 +24,10 @@ export const PopPlayer = () => {
       setCurrentVoice(currentQuestion?.voice);
     }, [sound])
   );
+
+  React.useEffect(() => {
+    if (!isFocused) sound && sound.pauseAsync();
+  }, [isFocused]);
 
   return (
     <>
