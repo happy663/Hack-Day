@@ -41,7 +41,7 @@ export const UserFirstSetUpPage = () => {
         await setDoc(doc(db, "Users", firebaseUser.uid), {
           uid: firebaseUser?.uid,
           name: name,
-          icon_URL: firebaseUser?.photoURL,
+          icon_url: firebaseUser?.photoURL,
           birth_year: birthYear,
           gender: gender,
           introduction: introduction,
