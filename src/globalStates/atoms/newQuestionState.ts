@@ -15,7 +15,7 @@ export const recordingState = atom<RecordingStatus>({
 
 export type NewQuestionScreenState = RecordingStatus | RecognizeStatus;
 
-export const newQuestionState = atom<NewQuestionScreenState>({
+export const newQuestionScreenState = atom<NewQuestionScreenState>({
   key: "newQuestionState",
   default: "ready",
 });
