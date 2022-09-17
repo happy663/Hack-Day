@@ -33,9 +33,9 @@ export const useIsLogin = () => {
               uid: user.uid,
               name: user.displayName,
               icon_URL: user.photoURL,
-              birth_year: 0,
-              gender: '',
-              introduction: '',
+              birth_year: 2000,
+              gender: '男性',
+              introduction: 'よろしくおねがいします',
             });
           }
         } catch (error) {
