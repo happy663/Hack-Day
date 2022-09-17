@@ -11,20 +11,25 @@ import { useIsLogin } from "src/hooks/useIsLogin";
 import { firebaseUserState } from "src/globalStates/atoms/firebaseUserState";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { UserFirstSetUpPage } from "src/containers/UserFirstSetUpPage";
+import { isNewUserState } from "src/globalStates/atoms/isNewUserState";
 
 const Tabs = createBottomTabNavigator<PageRootDefine>();
 
 export const NavigationPage = () => {
-  const { isLogin, isNewUser } = useIsLogin();
-  console.log("isLogin", isLogin);
-  console.log("isNewUser", isNewUser);
+  const isLogin = useIsLogin();
+  console.log(isLogin);
+  const isNewUser = useRecoilValue(isNewUserState);
+  console.log(isNewUser);
 
   return (
     <NavigationContainer ref={AppNavigationRef}>
       <Header />
       {isLogin ? (
         isNewUser ? (
-          //既存ユーザなら
+          //Googleログインをした新規ユーザ
+          <UserFirstSetUpPage />
+        ) : (
+          //Googleログインをした上で既存ユーザなら
           <Tabs.Navigator
             initialRouteName={"Home"}
             tabBar={(props) => <NavigationBar {...props} />}
@@ -36,9 +41,6 @@ export const NavigationPage = () => {
             <Tabs.Screen name="NewQuestion" component={NewQuestion} />
             <Tabs.Screen name="ChatsPage" component={ChatsPage} />
           </Tabs.Navigator>
-        ) : (
-          //新規ユーザなら
-          <UserFirstSetUpPage />
         )
       ) : (
         <LoginPages />
