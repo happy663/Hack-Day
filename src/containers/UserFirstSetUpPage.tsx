@@ -23,14 +23,7 @@ export const UserFirstSetUpPage = () => {
   const [birthYear, setBirthYear] = React.useState(2000);
   const [introduction, setIntroduciton] =
     React.useState("よろしくお願いします");
-  const years = [
-    1950, 1951, 1952, 1953, 1954, 1955, 1956, 1957, 1958, 1959, 1960, 1961,
-    1962, 1963, 1964, 1965, 1966, 1967, 1968, 1969, 1970, 1971, 1972, 1973,
-    1974, 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985,
-    1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997,
-    1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
-    2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021,
-  ];
+  const years = [...Array(72)].map((_, index) => index + 1950);
 
   const firebaseUser = useRecoilValue(firebaseUserState);
   const setIsNewUser = useSetRecoilState(isNewUserState);
@@ -69,73 +62,63 @@ export const UserFirstSetUpPage = () => {
       style={{
         flex: 1,
         justifyContent: "center",
+        marginHorizontal: 24,
       }}
     >
-      <Text
-        style={{
-          marginLeft: 12,
-        }}
-      >
-        ユーザー名
-      </Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={setName}
-        value={name}
-        placeholder=""
-      />
-      <Text
-        style={{
-          marginLeft: 12,
-        }}
-      >
-        性別
-      </Text>
-      <Picker
-        selectedValue={gender}
-        onValueChange={(itemValue, itemIndex) => setGender(itemValue)}
-        style={{
-          height: 150,
-          width: 150,
-        }}
-      >
-        <Picker.Item label="男性" value="男性" />
-        <Picker.Item label="女性" value="女性" />
-      </Picker>
+      <View style={styles.inputLayout}>
+        <Text>ユーザー名</Text>
+        <TextInput
+          style={styles.introduceInput}
+          onChangeText={setName}
+          value={name}
+          placeholder=""
+        />
+      </View>
 
-      <Text
-        style={{
-          marginLeft: 12,
-        }}
-      >
-        誕生年
-      </Text>
-      <Picker
-        selectedValue={birthYear}
-        onValueChange={(itemValue, itemIndex) => setBirthYear(itemValue)}
-        style={{
-          height: 150,
-          width: 150,
-        }}
-      >
-        {years.map((year, index) => {
-          return (
-            <Picker.Item key={index} label={year.toString()} value={year} />
-          );
-        })}
-      </Picker>
-      <Text
-        style={{
-          marginLeft: 12,
-        }}
-      >
-        自己紹介
-      </Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={setIntroduciton}
-        value={introduction}
-      />
+      <View>
+        <Text>自己紹介</Text>
+        <TextInput
+          style={styles.introduceInput}
+          onChangeText={setIntroduciton}
+          value={introduction}
+        />
+      </View>
+
+      <View style={styles.inputLayout}>
+        <Text>性別</Text>
+        <View style={styles.pickerBox}>
+          <Picker
+            selectedValue={gender}
+            onValueChange={(itemValue, itemIndex) => setGender(itemValue)}
+            itemStyle={styles.pickerItem}
+          >
+            <Picker.Item label="男性" value="男性" />
+            <Picker.Item label="女性" value="女性" />
+            <Picker.Item label="どちらでもない" value="どちらでもない" />
+          </Picker>
+        </View>
+      </View>
+
+      <View style={styles.inputLayout}>
+        <Text>誕生年</Text>
+        <View style={styles.pickerBox}>
+          <Picker
+            selectedValue={birthYear}
+            onValueChange={(itemValue, itemIndex) => setBirthYear(itemValue)}
+            itemStyle={styles.pickerItem}
+          >
+            {years.map((year, index) => {
+              return (
+                <Picker.Item
+                  key={index}
+                  label={year.toString()}
+                  value={year.toString()}
+                />
+              );
+            })}
+          </Picker>
+        </View>
+      </View>
       <View
         style={{
           flexDirection: "row",
@@ -162,12 +145,23 @@ export const UserFirstSetUpPage = () => {
 };
 
 const styles = StyleSheet.create({
-  input: {
+  introduceInput: {
     height: 40,
     margin: 12,
     borderWidth: 1,
     padding: 10,
     borderColor: "black",
+  },
+  inputLayout: {
+    paddingVertical: 20,
+  },
+  pickerBox: {
+    flexShrink: 1,
+    borderWidth: 1,
+    margin: 12,
+  },
+  pickerItem: {
+    height: 12,
   },
   submitButton: {
     flexGrow: 0.4,
