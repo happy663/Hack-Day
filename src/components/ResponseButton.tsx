@@ -24,10 +24,6 @@ export const ResponseButton = () => {
   const { chats, setChats } = useChats();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [createdChat, setCreatedChat] = useState<Chat | null>(null);
-
-  // const user = useRecoilValue(userState);
-  // console.log(user, "user");
-
   const currentQuestion = useRecoilValue(currentQuestionState);
 
   const handleRecordingStart = async () => {

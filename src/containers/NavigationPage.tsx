@@ -14,9 +14,7 @@ const Tabs = createBottomTabNavigator<PageRootDefine>();
 
 export const NavigationPage = () => {
   const isLogin = useIsLogin();
-  console.log(isLogin);
   const isNewUser = useRecoilValue(isNewUserState);
-  console.log(isNewUser);
 
   return (
     <NavigationContainer ref={AppNavigationRef}>
