@@ -27,7 +27,10 @@ export const QuestionCard = ({
         )}
       </View>
       <View style={styles.profileContainer}>
-        <Image source={{ uri: user.icon_url }} style={globalStyles.iconLg} />
+        <Image
+          source={{ uri: user.icon_url }}
+          style={{ ...globalStyles.iconLg, borderRadius: 30 }}
+        />
         <View style={{ paddingLeft: 8 }}>
           <Text style={globalStyles.headingLg}>{user.name}</Text>
           <Text style={globalStyles.text}>
