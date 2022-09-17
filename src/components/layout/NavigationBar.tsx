@@ -28,7 +28,6 @@ export const NavigationBar = ({
         />
         <Text style={styles.caption}>ホーム</Text>
       </TouchableOpacity>
-
       <TouchableOpacity
         style={styles.item}
         onPress={() => console.log("pressed answered")}
@@ -45,7 +44,6 @@ export const NavigationBar = ({
         />
         <Text style={styles.caption}>回答</Text>
       </TouchableOpacity>
-
       <TouchableOpacity
         style={{ ...styles.item, transform: [{ translateY: -8 }] }}
         onPress={() => navigate("NewQuestion")}
@@ -69,7 +67,6 @@ export const NavigationBar = ({
         </View>
         <Text style={styles.caption}>質問する</Text>
       </TouchableOpacity>
-
       <TouchableOpacity style={styles.item}>
         <Icon
           name="bell"
@@ -83,7 +80,6 @@ export const NavigationBar = ({
         />
         <Text style={styles.caption}>通知</Text>
       </TouchableOpacity>
-
       <TouchableOpacity
         style={{ ...styles.item, transform: [{ translateY: -2 }] }}
       >
