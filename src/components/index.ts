@@ -4,3 +4,4 @@ export * from "./PopPlayer";
 export * from "./MicrophoneOnCircle";
 export * from "./Prompt";
 export * from "./ChatItem";
+export * from "./ResponseButton";

@@ -7,15 +7,13 @@ import {
   Dimensions,
   Image,
   ScrollView,
-  TouchableOpacity,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Player, ChatItem } from "src/components";
+import { Player, ChatItem, ResponseButton } from "src/components";
 import { theme, globalStyles } from "src/utils/theme";
 import { useRecoilValue } from "recoil";
 import { currentQuestionState } from "src/globalStates/atoms";
 import { format } from "date-fns";
-import Icon from "react-native-vector-icons/Feather";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { useChats } from "src/hooks/useChats";
 import { Audio } from "expo-av";
@@ -114,15 +112,7 @@ export const ChatsPage = () => {
           )}
           <View style={styles.BottomSpace} />
         </ScrollView>
-        <TouchableOpacity
-          style={styles.responseButton}
-          onPress={() => console.log("onPress")}
-        >
-          <Icon name="mic" size={theme.iconSize.sm} />
-          <Text style={{ marginLeft: 8, ...globalStyles.headingMd }}>
-            声を届ける
-          </Text>
-        </TouchableOpacity>
+        <ResponseButton />
       </LinearGradient>
     </Animated.View>
   );
