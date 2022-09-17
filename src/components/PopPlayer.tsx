@@ -49,7 +49,7 @@ export const PopPlayer = () => {
               >
                 <Image
                   source={{ uri: currentQuestion.user.icon_url }}
-                  style={globalStyles.iconMd}
+                  style={{ ...globalStyles.iconMd, borderRadius: 24 }}
                 />
                 <Text style={globalStyles.headingMd}>
                   {currentQuestion.user.name}さんを助ける!
@@ -60,7 +60,7 @@ export const PopPlayer = () => {
                       ? { uri: user.icon_url }
                       : require("assets/lefty.png")
                   }
-                  style={globalStyles.iconMd}
+                  style={{ ...globalStyles.iconMd, borderRadius: 24 }}
                 />
               </TouchableOpacity>
             </View>
