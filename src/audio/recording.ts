@@ -1,5 +1,6 @@
 import { Audio } from "expo-av";
 import * as FileSystem from "expo-file-system";
+import { SpeakerType } from "src/types";
 
 export const audioInitalize = async () => {
   const response = await Audio.getPermissionsAsync();
@@ -30,8 +31,18 @@ export async function getRecordingFileURI(
   return [status, recordFileURI];
 }
 
-export const postNewQuestion = async (recordFileURI: string) => {
+export const postQuestion = async (
+  recordFileURI: string,
+  user_id: string,
+  is_answer = false,
+  question_id?: string,
+  speakerType?: SpeakerType
+) => {
   const url = "https://hackday.kajilab.tk/upload";
+  const parameters: { [key: string]: string } = {};
+  if (question_id) parameters["question_id"] = question_id;
+  if (speakerType) parameters["type"] = speakerType;
+
   const response = await FileSystem.uploadAsync(url, recordFileURI, {
     uploadType: FileSystem.FileSystemUploadType.MULTIPART,
     httpMethod: "POST",
@@ -40,9 +51,10 @@ export const postNewQuestion = async (recordFileURI: string) => {
     },
     fieldName: "file",
     parameters: {
-      user_id: "6kSDkE0SNvWuVbiSVg8W",
-      is_answer: "false",
-      type: "questioner",
+      user_id: user_id,
+      is_answer: `${is_answer}`,
+      type: speakerType || "questioner",
+      ...parameters,
     },
   });
   const newQuestion = JSON.parse(response.body);

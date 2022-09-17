@@ -9,6 +9,8 @@ export interface User {
   gender: string; //デフォルト：未設定？
 }
 
+export type SpeakerType = "questioner" | "respondent" | "thank_you";
+
 export interface Question {
   question_id: string;
   keywords: string[]; // 10代, 女性, おでん

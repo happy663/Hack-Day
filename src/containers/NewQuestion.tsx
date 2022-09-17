@@ -12,7 +12,7 @@ import { Audio } from "expo-av";
 import {
   audioInitalize,
   startRecording,
-  postNewQuestion,
+  postQuestion,
   getRecordingFileURI,
 } from "src/audio/recording";
 
@@ -37,10 +37,30 @@ export const NewQuestion = () => {
     TOO_SHORT_VOICE: "質問が短すぎます",
   };
 
+  function stateToColors() {
+    const defaultColors: string[] = ["#F4A261", "#E9C46A"];
+    const badColors: string[] = ["#274653", "#287170"];
+    const colors = {
+      ready: defaultColors,
+      recording: defaultColors,
+      recognizing: defaultColors,
+      recognizing_faild: badColors,
+      recording_faild: badColors,
+      SUCCESS: defaultColors,
+      NG_WORD: badColors,
+      TOO_SHORT_VOICE: badColors,
+    };
+    return colors;
+  }
+
   async function uploadQuestion(recordFileURI: string) {
     try {
       setScreenStatus("recognizing");
-      const newQuestion = await postNewQuestion(recordFileURI);
+      const newQuestion = await postQuestion(
+        recordFileURI,
+        "6kSDkE0SNvWuVbiSVg8W",
+        false
+      );
       setScreenStatus(newQuestion.voice.status);
       setQuestionRecord(undefined);
     } catch {
@@ -52,10 +72,11 @@ export const NewQuestion = () => {
   return (
     <LinearGradient
       style={styles.root}
-      colors={["#F4A261", "#E9C46A"]}
+      colors={stateToColors()[screenStatus]}
       start={{ x: 0.5, y: 0.65 }}
     >
       <MicrophoneOnCircle
+        waveColor={stateToColors()[screenStatus][1]}
         onPress={(isRecording) => {
           if (screenStatus === "recognizing") return;
 
