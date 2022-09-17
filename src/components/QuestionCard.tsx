@@ -36,8 +36,8 @@ export const QuestionCard = ({
         </View>
       </View>
       <View style={styles.tagContainer}>
-        {keywords?.map((keyword) => (
-          <Text style={styles.tag} key={Math.random()}>
+        {keywords?.map((keyword, index) => (
+          <Text style={styles.tag} key={index}>
             {keyword}
           </Text>
         ))}
