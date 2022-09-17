@@ -126,7 +126,7 @@ export const ConfilmChatContentModal = (props: ConfilmChatContentModal) => {
 
 const styles = StyleSheet.create({
   summaryBox: {
-    padding: 10,
+    paddingHorizontal: 10,
     borderWidth: 3,
     borderColor: "#aaaaaa",
     backgroundColor: "#f0f0f0",
