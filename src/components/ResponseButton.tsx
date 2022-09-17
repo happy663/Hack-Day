@@ -1,18 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { theme, globalStyles } from "src/utils/theme";
 import { Text, TouchableOpacity, Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { StyleSheet } from "react-native";
+import { useRecoilValue } from "recoil";
+import { currentQuestionState } from "src/globalStates/atoms";
 
 export const ResponseButton = () => {
+  const [isRecording, setIsRecording] = useState<boolean>(false);
+
+  const currentQuestion = useRecoilValue(currentQuestionState);
+
   return (
     <TouchableOpacity
       style={styles.responseButton}
-      onPress={() => console.log("onPress")}
+      onPress={() => {
+        const nextState = !isRecording;
+        setIsRecording(nextState);
+      }}
     >
       <Icon name="mic" size={theme.iconSize.sm} />
       <Text style={{ marginLeft: 8, ...globalStyles.headingMd }}>
-        声を届ける
+        {isRecording ? "録音中" : "声を届ける"}
       </Text>
     </TouchableOpacity>
   );
