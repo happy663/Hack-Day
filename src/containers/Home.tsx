@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -6,15 +6,16 @@ import {
   FlatList,
   Dimensions,
   ViewToken,
-} from "react-native";
-import { QuestionCard, PopPlayer } from "src/components";
-import { theme, globalStyles } from "src/utils/theme";
-import { useQuestions } from "src/hooks/useQuestions";
-import { useRecoilState } from "recoil";
+} from 'react-native';
+import { QuestionCard, PopPlayer } from 'src/components';
+import { theme, globalStyles } from 'src/utils/theme';
+import { useQuestions } from 'src/hooks/useQuestions';
+import { useRecoilState } from 'recoil';
 import {
   currentQuestionState,
   currentVoiceState,
-} from "src/globalStates/atoms";
+} from 'src/globalStates/atoms';
+import { useIsLogin } from 'src/hooks/useIsLogin';
 
 export const Home = () => {
   const questions = useQuestions();
@@ -62,7 +63,7 @@ export const Home = () => {
             keyExtractor={(item) => item.question_id}
             snapToAlignment="start"
             decelerationRate="normal"
-            snapToInterval={Dimensions.get("window").width}
+            snapToInterval={Dimensions.get('window').width}
           />
         )}
       </View>

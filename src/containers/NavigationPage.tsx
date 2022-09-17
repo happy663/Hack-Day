@@ -10,15 +10,30 @@ import { LoginPages } from 'src/containers/LoginPage';
 import { useIsLogin } from 'src/hooks/useIsLogin';
 import { firebaseUserState } from 'src/globalStates/atoms/firebaseUserState';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { NavigationPage } from 'src/containers/NavigationPage';
 
 const Tabs = createBottomTabNavigator<PageRootDefine>();
 
-export default function App() {
-  //RecoilRootがあるコンポーネントでuseRecoilStataeを使うとバグるのでやむを得ずNavigationPageとして切り分ける
+export const NavigationPage = () => {
+  const isLogin = useIsLogin();
+
   return (
-    <RecoilRoot>
-      <NavigationPage />
-    </RecoilRoot>
+    <NavigationContainer ref={AppNavigationRef}>
+      <Header />
+      {isLogin ? (
+        <Tabs.Navigator
+          initialRouteName={'Home'}
+          tabBar={(props) => <NavigationBar {...props} />}
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Tabs.Screen name="Home" component={Home} />
+          <Tabs.Screen name="NewQuestion" component={NewQuestion} />
+          <Tabs.Screen name="ChatsPage" component={ChatsPage} />
+        </Tabs.Navigator>
+      ) : (
+        <LoginPages />
+      )}
+    </NavigationContainer>
   );
-}
+};
