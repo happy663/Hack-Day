@@ -2,6 +2,7 @@ import React from "react";
 import { Text, Modal, View, Pressable, FlatList } from "react-native";
 import { theme } from "src/utils/theme";
 import { StyleSheet } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 export interface ConfilmChatContentModal {
   modalVisiblity: boolean;
@@ -48,31 +49,41 @@ export const ConfilmChatContentModal = (props: ConfilmChatContentModal) => {
           <Text
             style={{
               fontSize: 24,
-              textAlign: "left",
+              textAlign: "center",
+              backgroundColor: "black",
+              opacity: 0.9,
+              color: theme.colors.white,
               paddingHorizontal: 20,
               paddingVertical: 10,
             }}
           >
-            内容
+            あなたの声
           </Text>
         </View>
-        <View
+        <LinearGradient
+          colors={["#F4A261", "#E9C46A"]}
           style={{
             backgroundColor: theme.colors.white,
           }}
         >
-          <FlatList
+          <View
             style={{
-              backgroundColor: "#f0f0f0",
               height: 300,
               padding: 20,
               flexGrow: 0,
             }}
-            data={createdChat ? createdChat.voice.segments : []}
-            renderItem={(info) => <Text>{info.item}</Text>}
-          />
+          >
+            <Text style={styles.summaryHeader}>要約テキスト</Text>
+            <FlatList
+              style={styles.summaryBox}
+              data={createdChat ? createdChat.voice.segments : []}
+              renderItem={(info) => (
+                <Text style={styles.summaryText}>{info.item}</Text>
+              )}
+            />
+          </View>
           {/* {createdChat && <ChatItem {...createdChat} />} */}
-        </View>
+        </LinearGradient>
 
         <View
           style={{
@@ -83,11 +94,14 @@ export const ConfilmChatContentModal = (props: ConfilmChatContentModal) => {
             borderBottomRightRadius: 10,
           }}
         >
-          <Pressable style={[styles.button]} onPress={onPressCancel}>
-            <Text>キャンセル</Text>
+          <Pressable
+            style={[styles.button, { borderRightWidth: 1 }]}
+            onPress={onPressCancel}
+          >
+            <Text style={styles.buttonText}>削除する</Text>
           </Pressable>
           <Pressable style={[styles.button]} onPress={onPressSend}>
-            <Text>送信</Text>
+            <Text style={styles.buttonText}>投稿する</Text>
           </Pressable>
         </View>
       </View>
@@ -96,8 +110,28 @@ export const ConfilmChatContentModal = (props: ConfilmChatContentModal) => {
 };
 
 const styles = StyleSheet.create({
-  button: {
-    borderRadius: 20,
+  summaryBox: {
     padding: 10,
+    borderWidth: 3,
+    borderColor: "#aaaaaa",
+    backgroundColor: "#f0f0f0",
+  },
+  summaryText: {
+    fontSize: 20,
+    lineHeight: 30,
+  },
+  summaryHeader: {
+    fontSize: 18,
+    fontWeight: "bold",
+    lineHeight: 32,
+  },
+  button: {
+    padding: 10,
+    flexGrow: 1,
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
