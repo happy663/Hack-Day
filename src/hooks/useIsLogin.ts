@@ -1,9 +1,9 @@
-import { onAuthStateChanged, getAuth } from 'firebase/auth';
-import { useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { firebaseUserState } from 'src/globalStates/atoms/firebaseUserState';
-import { useState } from 'react';
-import { app, db } from 'src/utils/firebase';
+import { onAuthStateChanged, getAuth } from "firebase/auth";
+import { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
+import { firebaseUserState } from "src/globalStates/atoms/firebaseUserState";
+import { useState } from "react";
+import { app, db } from "src/utils/firebase";
 import {
   collection,
   doc,
@@ -11,37 +11,25 @@ import {
   query,
   setDoc,
   where,
-} from 'firebase/firestore';
+} from "firebase/firestore";
 
 export const useIsLogin = () => {
   const [isLogin, setIsLogin] = useState<boolean | undefined>();
+  const [isNewUser, setIsNewUser] = useState<boolean | undefined>();
 
   const setFirebaseUser = useSetRecoilState(firebaseUserState);
   useEffect(() => {
     const auth = getAuth(app);
     return onAuthStateChanged(auth, async (user) => {
       if (user) {
-        try {
-          const q = query(
-            collection(db, 'Users'),
-            where('uid', '==', user.uid)
-          );
-          const querySnapshot = await getDocs(q);
-          //ユーザが存在しない場合は、新規登録
-          if (querySnapshot.size === 0) {
-            await setDoc(doc(db, 'Users', user.uid), {
-              uid: user.uid,
-              name: user.displayName,
-              icon_URL: user.photoURL,
-              birth_year: 0,
-              gender: '',
-              introduction: '',
-            });
-          }
-        } catch (error) {
-          console.log(error);
+        const q = query(collection(db, "Users"), where("uid", "==", user.uid));
+        const querySnapshot = await getDocs(q);
+        //fireStoreにユーザが存在しない場合
+        if (querySnapshot.size === 0) {
+          setIsNewUser(true);
+        } else {
+          setIsNewUser(false);
         }
-
         setFirebaseUser(user);
         setIsLogin(true);
       } else {
@@ -50,5 +38,5 @@ export const useIsLogin = () => {
     });
   }, [setFirebaseUser]);
 
-  return isLogin;
+  return { isLogin, isNewUser };
 };

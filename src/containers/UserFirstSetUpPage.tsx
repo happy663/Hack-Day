@@ -9,21 +9,28 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useRecoilValue } from "recoil";
-import { firebaseUserState } from "src/globalStates/atoms/firebaseUserState";
 import { theme } from "src/utils/theme";
+import { onAuthStateChanged, getAuth } from "firebase/auth";
+import { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
+import { useState } from "react";
+import { app, db } from "src/utils/firebase";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
+import { firebaseUserState } from "src/globalStates/atoms/firebaseUserState";
 
 export const UserFirstSetUpPage = () => {
   const [name, setName] = React.useState("");
   const [gender, setGender] = React.useState("男性");
   const [birthYear, setBirthYear] = React.useState(2000);
-  const [introduciton, setIntroduciton] =
+  const [introduction, setIntroduciton] =
     React.useState("よろしくお願いします");
-
-  console.log(name);
-  console.log(gender);
-  console.log(birthYear);
-  console.log(introduciton);
-
   const years = [
     1950, 1951, 1952, 1953, 1954, 1955, 1956, 1957, 1958, 1959, 1960, 1961,
     1962, 1963, 1964, 1965, 1966, 1967, 1968, 1969, 1970, 1971, 1972, 1973,
@@ -32,6 +39,26 @@ export const UserFirstSetUpPage = () => {
     1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
     2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021,
   ];
+
+  const firebaseUser = useRecoilValue(firebaseUserState);
+
+  //新規登録
+  const registerUser = async () => {
+    if (firebaseUser) {
+      try {
+        await setDoc(doc(db, "Users", firebaseUser.uid), {
+          uid: firebaseUser?.uid,
+          name: firebaseUser?.displayName,
+          icon_URL: firebaseUser?.photoURL,
+          birth_year: birthYear,
+          gender: gender,
+          introduction: introduction,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   return (
     <View
@@ -107,7 +134,7 @@ export const UserFirstSetUpPage = () => {
       <TextInput
         style={styles.input}
         onChangeText={setIntroduciton}
-        value={introduciton}
+        value={introduction}
       />
       <View
         style={{

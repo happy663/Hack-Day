@@ -15,14 +15,15 @@ import { UserFirstSetUpPage } from "src/containers/UserFirstSetUpPage";
 const Tabs = createBottomTabNavigator<PageRootDefine>();
 
 export const NavigationPage = () => {
-  const isLogin = useIsLogin();
-  const existingUser = false;
+  const { isLogin, isNewUser } = useIsLogin();
+  console.log("isLogin", isLogin);
+  console.log("isNewUser", isNewUser);
 
   return (
     <NavigationContainer ref={AppNavigationRef}>
       <Header />
       {isLogin ? (
-        existingUser ? (
+        isNewUser ? (
           //既存ユーザなら
           <Tabs.Navigator
             initialRouteName={"Home"}
