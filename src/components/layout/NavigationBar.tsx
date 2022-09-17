@@ -96,7 +96,7 @@ export const NavigationBar = ({
                 ? { uri: user.icon_url }
                 : require("assets/lefty.png")
             }
-            style={{ ...globalStyles.iconSm }}
+            style={{ ...globalStyles.iconSm, borderRadius: 30 }}
           />
         </View>
         <Text style={styles.caption}>マイページ</Text>
