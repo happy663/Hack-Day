@@ -1,11 +1,12 @@
 import { ReactNode } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 import { theme, globalStyles } from "src/utils/theme";
+import Logo from "assets/Logo.svg";
 
 export const Header = () => {
   return (
     <View style={styles.header}>
-      <Text style={styles.title}>LOGO</Text>
+      <Logo width={120} height={40} />
     </View>
   );
 };
