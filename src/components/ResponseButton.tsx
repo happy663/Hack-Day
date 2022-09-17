@@ -14,6 +14,7 @@ import { Audio } from "expo-av";
 import { useChats } from "src/hooks/useChats";
 import { Chat } from "src/types";
 import { ConfilmChatContentModal } from "./ConfilmChatContentModal";
+import { userState } from "src/globalStates/atoms/userState";
 
 export const ResponseButton = () => {
   const [isRecording, setIsRecording] = useState<boolean>(false);
@@ -23,11 +24,8 @@ export const ResponseButton = () => {
   const { chats, setChats } = useChats();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [createdChat, setCreatedChat] = useState<Chat | null>(null);
-
-  // const user = useRecoilValue(userState);
-  // console.log(user, "user");
-
   const currentQuestion = useRecoilValue(currentQuestionState);
+  const user = useRecoilValue(userState);
 
   const handleRecordingStart = async () => {
     const record = await startRecording();
@@ -40,15 +38,17 @@ export const ResponseButton = () => {
     if (!answerRecord) {
       return;
     }
+    if (!user) {
+      return;
+    }
 
     try {
       const [status, recordURI] = await getRecordingFileURI(answerRecord);
       if (!status.isDoneRecording) return;
       // if (!user) return;
-
       const answer = await postQuestion(
         recordURI,
-        currentQuestion.user.uid,
+        user?.uid,
         true,
         currentQuestion.question_id,
         "respondent"

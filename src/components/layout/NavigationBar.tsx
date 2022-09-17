@@ -4,6 +4,8 @@ import { theme, globalStyles } from "src/utils/theme";
 import Icon from "react-native-vector-icons/Feather";
 import { navigate } from "src/routes/ApplicationRoutes";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { userState } from "src/globalStates/atoms/userState";
+import { useRecoilValue } from "recoil";
 
 export const NavigationBar = ({
   state,
@@ -11,6 +13,8 @@ export const NavigationBar = ({
   navigation,
 }: BottomTabBarProps) => {
   const currentPage = state.routes[state.index].name;
+  const user = useRecoilValue(userState);
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.item} onPress={() => navigate("Home")}>
@@ -24,7 +28,6 @@ export const NavigationBar = ({
         />
         <Text style={styles.caption}>ホーム</Text>
       </TouchableOpacity>
-
       <TouchableOpacity
         style={styles.item}
         onPress={() => console.log("pressed answered")}
@@ -41,7 +44,6 @@ export const NavigationBar = ({
         />
         <Text style={styles.caption}>回答</Text>
       </TouchableOpacity>
-
       <TouchableOpacity
         style={{ ...styles.item, transform: [{ translateY: -8 }] }}
         onPress={() => navigate("NewQuestion")}
@@ -65,7 +67,6 @@ export const NavigationBar = ({
         </View>
         <Text style={styles.caption}>質問する</Text>
       </TouchableOpacity>
-
       <TouchableOpacity style={styles.item}>
         <Icon
           name="bell"
@@ -79,7 +80,6 @@ export const NavigationBar = ({
         />
         <Text style={styles.caption}>通知</Text>
       </TouchableOpacity>
-
       <TouchableOpacity
         style={{ ...styles.item, transform: [{ translateY: -2 }] }}
       >
@@ -91,8 +91,12 @@ export const NavigationBar = ({
           }}
         >
           <Image
-            source={require("assets/lefty.png")}
-            style={{ ...globalStyles.iconSm }}
+            source={
+              user?.icon_url
+                ? { uri: user.icon_url }
+                : require("assets/lefty.png")
+            }
+            style={{ ...globalStyles.iconSm, borderRadius: 30 }}
           />
         </View>
         <Text style={styles.caption}>マイページ</Text>
