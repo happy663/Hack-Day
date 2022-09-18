@@ -23,7 +23,6 @@ export const NewQuestion = () => {
   const [questionRecord, setQuestionRecord] = React.useState<Audio.Recording>();
   const [screenState, setScreenState] = useRecoilState(newQuestionScreenState);
   const user = useRecoilValue(userState);
-
   useEffect(() => {
     audioInitalize();
   }, []);

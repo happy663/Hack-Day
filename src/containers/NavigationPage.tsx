@@ -19,7 +19,9 @@ export const NavigationPage = () => {
   return (
     <NavigationContainer ref={AppNavigationRef}>
       <Header />
-      {isLogin ? (
+      {isLogin == undefined ? (
+        <></>
+      ) : isLogin ? (
         isNewUser ? (
           //Googleログインをした新規ユーザ
           <UserFirstSetUpPage />
