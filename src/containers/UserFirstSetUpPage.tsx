@@ -37,7 +37,7 @@ export const UserFirstSetUpPage = () => {
           uid: firebaseUser?.uid,
           name: name,
           icon_url: firebaseUser?.photoURL,
-          birth_year: birthYear,
+          birth_year: Number(birthYear),
           gender: gender,
           introduction: introduction,
         });
@@ -47,7 +47,7 @@ export const UserFirstSetUpPage = () => {
           name: name,
           icon_url:
             firebaseUser?.photoURL == null ? "" : firebaseUser?.photoURL,
-          birth_year: birthYear,
+          birth_year: Number(birthYear),
           gender: gender,
           introduction: introduction,
         });
