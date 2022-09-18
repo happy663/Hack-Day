@@ -64,7 +64,10 @@ export const ChatsPage = () => {
         <View style={styles.profileContainer}>
           <Image
             source={{ uri: currentQuestion.user.icon_url }}
-            style={globalStyles.iconLg}
+            style={{
+              ...globalStyles.iconLg,
+              borderRadius: theme.iconSize.lg / 2,
+            }}
           />
           <View style={{ paddingLeft: 8 }}>
             <Text style={globalStyles.headingLg}>
