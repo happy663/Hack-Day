@@ -48,7 +48,7 @@ export const Home = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={{ height: 20, ...styles.containerItem }}>
+      <View style={{ height: 30, ...styles.containerItem }}>
         <TextInput style={styles.searchBar} />
       </View>
       <View style={{ flex: 1, ...styles.containerItem }}>
