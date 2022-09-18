@@ -1,16 +1,9 @@
 import React, { useState } from "react";
 import { theme, globalStyles } from "src/utils/theme";
-import {
-  Text,
-  TouchableOpacity,
-  Dimensions,
-  Modal,
-  View,
-  Pressable,
-} from "react-native";
+import { Text, TouchableOpacity, Dimensions, Animated } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { StyleSheet } from "react-native";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { currentQuestionState } from "src/globalStates/atoms";
 import {
   getRecordingFileURI,
@@ -18,46 +11,52 @@ import {
   postQuestion,
 } from "src/audio/recording";
 import { Audio } from "expo-av";
-import { Question } from "src/types";
-import { questionsState } from "src/globalStates/atoms/questionsState";
+import { useChats } from "src/hooks/useChats";
+import { Chat } from "src/types";
+import { ConfilmChatContentModal } from "./ConfilmChatContentModal";
+import { userState } from "src/globalStates/atoms/userState";
 
 export const ResponseButton = () => {
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [answerRecord, setAnswerRecord] = useState<Audio.Recording | null>(
     null
   );
-  const setQuestions = useSetRecoilState(questionsState);
+  const { chats, setChats } = useChats();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [modalContent, setModalContent] = useState<string>("");
-
+  const [createdChat, setCreatedChat] = useState<Chat | null>(null);
   const currentQuestion = useRecoilValue(currentQuestionState);
+  const user = useRecoilValue(userState);
 
   const handleRecordingStart = async () => {
     const record = await startRecording();
     setAnswerRecord(record);
+    animation.start();
   };
 
   const handleRecordingFinish = async () => {
+    animation.stop();
     if (!answerRecord) {
+      return;
+    }
+    if (!user) {
       return;
     }
 
     try {
       const [status, recordURI] = await getRecordingFileURI(answerRecord);
-      if (!status.isDoneRecording) {
-        return;
-      }
+      if (!status.isDoneRecording) return;
+      // if (!user) return;
       const answer = await postQuestion(
         recordURI,
-        currentQuestion.user.uid,
+        user?.uid,
         true,
-        currentQuestion.question_id
+        currentQuestion.question_id,
+        "respondent"
       );
-      console.log(11234, answer);
       if (answer.voice && answer.voice.status === "SUCCESS") {
-        // TODO: 投稿内容を確認させるモーダルを表示
-        setQuestions(answer);
-        // setModalVisible(true);
+        console.log(answer, chats);
+        setCreatedChat(answer);
+        setModalVisible(true);
       } else {
         console.error("wow.", answer);
         throw new Error("音声認識に失敗しました");
@@ -69,58 +68,128 @@ export const ResponseButton = () => {
     }
   };
 
+  const waveAnim = React.useRef({
+    scale: new Animated.Value(0),
+    opacity: new Animated.Value(0),
+  }).current;
+  const micScale = React.useRef(new Animated.Value(1)).current;
+
+  const animation = Animated.loop(
+    Animated.parallel([
+      // waveAnim.scale
+      Animated.sequence([
+        Animated.timing(waveAnim.scale, {
+          toValue: 0,
+          duration: 0,
+          useNativeDriver: true,
+        }),
+        Animated.timing(waveAnim.scale, {
+          toValue: 1,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+      ]),
+      // waveAnim.opacity
+      Animated.sequence([
+        Animated.timing(waveAnim.opacity, {
+          toValue: 1,
+          duration: 0,
+          useNativeDriver: true,
+        }),
+        Animated.timing(waveAnim.opacity, {
+          toValue: 0.75,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(waveAnim.opacity, {
+          toValue: 0,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+      ]),
+      // micScale
+      Animated.sequence([
+        Animated.timing(micScale, {
+          toValue: 0.95,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(micScale, {
+          toValue: 1,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+      ]),
+    ])
+  );
+
+  const backgroundColor = "#F4A261";
+
   return (
     <>
-      <Modal
-        animationType="fade"
-        transparent={false}
-        visible={modalVisible}
+      <ConfilmChatContentModal
         onRequestClose={() => {
-          setModalVisible(!modalVisible);
+          setModalVisible(false);
         }}
-        style={styles.modalLayout}
+        onPressCancel={() => {
+          setModalVisible(false);
+        }}
+        onPressSend={() => {
+          if (createdChat) {
+            console.log(chats, createdChat);
+            setChats([...chats, createdChat]);
+          }
+          setModalVisible(false);
+        }}
+        modalVisiblity={modalVisible}
+        createdChat={createdChat}
+      />
+      <Animated.View
+        style={{
+          ...styles.responseButton,
+          backgroundColor: isRecording ? "#F4A261" : theme.colors.white,
+          transform: [{ scale: micScale }],
+        }}
       >
-        <View
+        <TouchableOpacity
           style={{
-            backgroundColor: "#ff00aa",
-            top: 100,
-            flex: 1,
-            justifyContent: "center",
+            flexDirection: "row",
+          }}
+          onPress={() => {
+            const nowIsRecording = !isRecording;
+            setIsRecording(nowIsRecording);
+            if (nowIsRecording) {
+              handleRecordingStart();
+            } else {
+              handleRecordingFinish();
+            }
           }}
         >
-          <View>
-            <Text>日本語で遊ぼうあああああああ</Text>
-          </View>
-          <View style={styles.buttonLayout}>
-            <Pressable
-              style={[styles.button]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text>キャンセル</Text>
-            </Pressable>
-            <Pressable style={[styles.button]} onPress={() => {}}>
-              <Text>送信</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
-      <TouchableOpacity
-        style={styles.responseButton}
-        onPress={() => {
-          const nowIsRecording = !isRecording;
-          setIsRecording(nowIsRecording);
-          if (nowIsRecording) {
-            handleRecordingStart();
-          } else {
-            handleRecordingFinish();
-          }
+          <Icon
+            name={isRecording ? "mic" : "mic-off"}
+            size={theme.iconSize.sm}
+          />
+          <Text style={{ marginLeft: 8, ...globalStyles.headingMd }}>
+            {isRecording ? "録音中" : "声を届ける"}
+          </Text>
+        </TouchableOpacity>
+      </Animated.View>
+      <Animated.View
+        style={{
+          ...styles.insideWave,
+          backgroundColor,
+          transform: [{ scale: waveAnim.scale }],
+          opacity: waveAnim.opacity,
         }}
-      >
-        <Icon name="mic" size={theme.iconSize.sm} />
-        <Text style={{ marginLeft: 8, ...globalStyles.headingMd }}>
-          {isRecording ? "録音中" : "声を届ける"}
-        </Text>
-      </TouchableOpacity>
+      />
+      <Animated.View
+        style={{
+          ...styles.outsideWave,
+          backgroundColor,
+          transform: [{ scale: waveAnim.scale }],
+          opacity: waveAnim.opacity,
+        }}
+      />
     </>
   );
 };
@@ -134,30 +203,27 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 24,
     bottom: 40,
+    height: 50,
     left: Dimensions.get("window").width / 2 - 90,
     ...globalStyles.flexRowCenter,
     ...globalStyles.boxShadow,
   },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
-  modalLayout: {
+  outsideWave: {
     position: "absolute",
-    justifyContent: "center",
-    alignItems: "center",
-    height: Dimensions.get("screen").height / 2,
-    backgroundColor: "#0f0",
+    left: Dimensions.get("window").width / 2 - 150,
+    bottom: 5,
+    width: 300,
+    height: 120,
+    zIndex: -2,
+    borderRadius: 100,
   },
-  buttonLayout: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    color: "red",
+  insideWave: {
+    position: "absolute",
+    left: Dimensions.get("window").width / 2 - 125,
+    bottom: 20,
+    width: 250,
+    borderRadius: 100,
+    height: 90,
+    zIndex: -1,
   },
 });

@@ -3,10 +3,10 @@ import { StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "src/utils/theme";
 import { MicrophoneOnCircle, Prompt } from "src/components";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   NewQuestionScreenState,
-  newQuestionState,
+  newQuestionScreenState,
 } from "src/globalStates/atoms/newQuestionState";
 import { Audio } from "expo-av";
 import {
@@ -15,12 +15,14 @@ import {
   postQuestion,
   getRecordingFileURI,
 } from "src/audio/recording";
+import { userState } from "src/globalStates/atoms/userState";
 
 export interface NewQuestionProps {}
 
 export const NewQuestion = () => {
   const [questionRecord, setQuestionRecord] = React.useState<Audio.Recording>();
-  const [screenStatus, setScreenStatus] = useRecoilState(newQuestionState);
+  const [screenState, setScreenState] = useRecoilState(newQuestionScreenState);
+  const user = useRecoilValue(userState);
 
   useEffect(() => {
     audioInitalize();
@@ -33,7 +35,7 @@ export const NewQuestion = () => {
     recognizing_faild: "文字起こしに失敗",
     recording_faild: "録音に失敗しました",
     SUCCESS: "完了しました",
-    NG_WORD: "汚い言葉は使えません",
+    NG_WORD: "心ない言葉を\n使っているようです",
     TOO_SHORT_VOICE: "質問が短すぎます",
   };
 
@@ -54,17 +56,14 @@ export const NewQuestion = () => {
   }
 
   async function uploadQuestion(recordFileURI: string) {
+    if (!user) return;
     try {
-      setScreenStatus("recognizing");
-      const newQuestion = await postQuestion(
-        recordFileURI,
-        "6kSDkE0SNvWuVbiSVg8W",
-        false
-      );
-      setScreenStatus(newQuestion.voice.status);
+      setScreenState("recognizing");
+      const newQuestion = await postQuestion(recordFileURI, user.uid, false);
+      setScreenState(newQuestion.voice.status);
       setQuestionRecord(undefined);
     } catch {
-      setScreenStatus("recording_faild");
+      setScreenState("recording_faild");
       setQuestionRecord(undefined);
     }
   }
@@ -72,31 +71,31 @@ export const NewQuestion = () => {
   return (
     <LinearGradient
       style={styles.root}
-      colors={stateToColors()[screenStatus]}
+      colors={stateToColors()[screenState]}
       start={{ x: 0.5, y: 0.65 }}
     >
       <MicrophoneOnCircle
-        waveColor={stateToColors()[screenStatus][1]}
+        waveColor={stateToColors()[screenState][1]}
         onPress={(isRecording) => {
-          if (screenStatus === "recognizing") return;
+          if (screenState === "recognizing") return;
 
           if (isRecording) {
             const startRec = async () => {
-              setScreenStatus("recording");
+              setScreenState("recording");
               const record = await startRecording();
               setQuestionRecord(record);
             };
             try {
               startRec();
             } catch {
-              setScreenStatus("recording_faild");
+              setScreenState("recording_faild");
               setQuestionRecord(undefined);
             }
           } else {
             console.log("Stopping recording..", questionRecord);
 
             if (!questionRecord) {
-              setScreenStatus("ready");
+              setScreenState("ready");
               return;
             }
 
@@ -105,7 +104,7 @@ export const NewQuestion = () => {
                 questionRecord
               );
               if (!status.isDoneRecording || !fileURI) {
-                setScreenStatus("recording_faild");
+                setScreenState("recording_faild");
                 setQuestionRecord(undefined);
                 return;
               }
@@ -115,7 +114,7 @@ export const NewQuestion = () => {
           }
         }}
       />
-      <Prompt>{promptDic[screenStatus]}</Prompt>
+      <Prompt>{promptDic[screenState]}</Prompt>
     </LinearGradient>
   );
 };
