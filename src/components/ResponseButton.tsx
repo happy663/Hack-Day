@@ -35,6 +35,7 @@ export const ResponseButton = () => {
 
   const handleRecordingFinish = async () => {
     animation.stop();
+    animation.reset();
     if (!answerRecord) {
       return;
     }
